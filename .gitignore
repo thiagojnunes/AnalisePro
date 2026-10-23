@@ -1,0 +1,25 @@
+# Build outputs
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio / Rider / VSCode caches
+.vs/
+.idea/
+.vscode/
+
+# Windows desktop / Thumbs
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.log
+
+# Legacy binary
+AidaFree.exe
+
