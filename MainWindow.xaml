@@ -779,6 +779,301 @@
                         </ScrollViewer>
                     </Border>
                 </TabItem>
+                <!-- TAB 7: REDE & DIAGNÓSTICO TI (Canivete Suíço de Rede) -->
+                <TabItem Header="🌐 Rede &amp; Diagnóstico TI">
+                    <Border Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <!-- TOPO: Status da Conexão Ativa & Diagnóstico Físico do Cabo RJ45 -->
+                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="🔌 DIAGNÓSTICO FÍSICO DO CABO RJ45 &amp; LINK" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentCyan}" />
+                                                <TextBlock Text=" • Status da camada física da placa" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                            <Button x:Name="BtnRefreshNetDiag" Grid.Column="1" Click="BtnRefreshNetDiag_Click"
+                                                    Background="#1E2235" Foreground="{StaticResource AccentCyan}" BorderBrush="{StaticResource BorderCard}"
+                                                    Padding="10,4" FontSize="11" FontWeight="SemiBold" Cursor="Hand">
+                                                <TextBlock Text="🔄 Atualizar Leitura" />
+                                            </Button>
+                                        </Grid>
+
+                                        <!-- Cards de Adaptadores e Alerta dos 8 pinos do RJ45 -->
+                                        <ItemsControl x:Name="CableDiagItemsControl">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#10121C" BorderBrush="{Binding StatusBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,8">
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="Auto" />
+                                                            </Grid.RowDefinitions>
+
+                                                            <Grid Grid.Row="0">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+
+                                                                <StackPanel>
+                                                                    <TextBlock Text="{Binding AdapterName}" FontWeight="Bold" FontSize="13" Foreground="{StaticResource TextPrimary}" />
+                                                                    <TextBlock Text="{Binding AdapterDescription}" FontSize="10" Foreground="{StaticResource TextMuted}" Margin="0,2,0,0" />
+                                                                </StackPanel>
+
+                                                                <Border Grid.Column="1" Background="#1E2235" CornerRadius="4" Padding="10,4" VerticalAlignment="Center">
+                                                                    <TextBlock Text="{Binding LinkSpeedDisplay}" FontWeight="Bold" FontSize="12" Foreground="{Binding StatusBrush}" />
+                                                                </Border>
+                                                            </Grid>
+
+                                                            <!-- Diagnóstico detalhado e alerta dos pinos -->
+                                                            <Border Grid.Row="1" Background="#161824" CornerRadius="4" Padding="10,8" Margin="0,8,0,0">
+                                                                <StackPanel>
+                                                                    <TextBlock Text="{Binding WarningTitle}" FontWeight="Bold" FontSize="11" Foreground="{Binding StatusBrush}" />
+                                                                    <TextBlock Text="{Binding PinDiagnosticMessage}" FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap" Margin="0,4,0,0" LineHeight="16" />
+                                                                </StackPanel>
+                                                            </Border>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- SEGUNDO BLOCO: TESTE DE CONECTIVIDADE EM 3 CAMADAS (ISOLAR ONDE CAIU A INTERNET) -->
+                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="⚡ TESTE DE CONECTIVIDADE (ONDE ESTÁ A FALHA?)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentGreen}" VerticalAlignment="Center" />
+                                            <Button x:Name="BtnTestConnectivity" Grid.Column="1" Click="BtnTestConnectivity_Click"
+                                                    Background="#142820" Foreground="{StaticResource AccentGreen}" BorderBrush="{StaticResource AccentGreen}"
+                                                    Padding="12,4" FontSize="11" FontWeight="SemiBold" Cursor="Hand">
+                                                <TextBlock Text="▶️ Testar Conexão Agora" />
+                                            </Button>
+                                        </Grid>
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Ponto 1: Gateway Local -->
+                                            <Border Grid.Column="0" Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,6,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="1. ROTEADOR LOCAL (GATEWAY)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                    <TextBlock x:Name="ConnGatewayAddr" Text="Detectando..." FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,6" />
+                                                    <TextBlock x:Name="ConnGatewayLatency" Text="-- ms" FontSize="18" FontWeight="Bold" Foreground="{StaticResource AccentCyan}" />
+                                                    <TextBlock x:Name="ConnGatewayStatus" Text="Não testado" FontSize="10" Foreground="{StaticResource TextMuted}" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Ponto 2: WAN / DNS 1.1.1.1 -->
+                                            <Border Grid.Column="1" Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="3,0,3,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="2. PROVEDOR / WAN (1.1.1.1)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                    <TextBlock Text="Cloudflare DNS" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,6" />
+                                                    <TextBlock x:Name="ConnWanLatency" Text="-- ms" FontSize="18" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" />
+                                                    <TextBlock x:Name="ConnWanStatus" Text="Não testado" FontSize="10" Foreground="{StaticResource TextMuted}" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Ponto 3: DNS Web google.com -->
+                                            <Border Grid.Column="2" Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="6,0,0,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="3. RESOLUÇÃO WEB (google.com)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                    <TextBlock Text="Resolução de Nomes" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,6" />
+                                                    <TextBlock x:Name="ConnWebLatency" Text="-- ms" FontSize="18" FontWeight="Bold" Foreground="{StaticResource AccentPurple}" />
+                                                    <TextBlock x:Name="ConnWebStatus" Text="Não testado" FontSize="10" Foreground="{StaticResource TextMuted}" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+
+                                        <!-- Resumo e Diagnóstico da Falha -->
+                                        <Border x:Name="ConnectivitySummaryBox" Visibility="Collapsed" Background="#1B2230" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,8,0,0">
+                                            <TextBlock x:Name="ConnectivitySummaryText" Text="Status da Conexão" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource TextPrimary}" />
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- TERCEIRO BLOCO: AÇÕES RÁPIDAS DE 1-CLIQUE DO TÉCNICO -->
+                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <TextBlock Text="🛠️ AÇÕES RÁPIDAS DE REPARO DE REDE (1-CLIQUE)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentOrange}" Margin="0,0,0,10" />
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Botão 1: Release & Renew -->
+                                            <Button x:Name="BtnReleaseRenew" Grid.Column="0" Click="BtnReleaseRenew_Click" Margin="0,0,6,0"
+                                                    Background="#231C14" BorderBrush="{StaticResource AccentOrange}" BorderThickness="1"
+                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                <StackPanel HorizontalAlignment="Center">
+                                                    <TextBlock Text="🔄 IP Release &amp; Renew" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentOrange}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="Renovar IP via DHCP" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- Botão 2: Flush DNS -->
+                                            <Button x:Name="BtnFlushDns" Grid.Column="1" Click="BtnFlushDns_Click" Margin="3,0,3,0"
+                                                    Background="#142622" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1"
+                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                <StackPanel HorizontalAlignment="Center">
+                                                    <TextBlock Text="🧹 Limpar Cache DNS" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentCyan}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="ipconfig /flushdns" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- Botão 3: Reiniciar Placa -->
+                                            <Button x:Name="BtnRestartAdapter" Grid.Column="2" Click="BtnRestartAdapter_Click" Margin="3,0,3,0"
+                                                    Background="#1D182E" BorderBrush="{StaticResource AccentPurple}" BorderThickness="1"
+                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                <StackPanel HorizontalAlignment="Center">
+                                                    <TextBlock Text="🔌 Reiniciar Adaptador" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentPurple}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="Desativar e reativar placa" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- Botão 4: Reset TCP/IP Winsock -->
+                                            <Button x:Name="BtnResetTcpIp" Grid.Column="3" Click="BtnResetTcpIp_Click" Margin="6,0,0,0"
+                                                    Background="#2D161C" BorderBrush="{StaticResource AccentRed}" BorderThickness="1"
+                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                <StackPanel HorizontalAlignment="Center">
+                                                    <TextBlock Text="⚠️ Resetar TCP/IP" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentRed}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="netsh winsock reset" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+
+                                        <!-- Terminal / Console de Saída do Comando -->
+                                        <Border Background="#090A0F" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10">
+                                            <StackPanel>
+                                                <Grid Margin="0,0,0,6">
+                                                    <TextBlock Text="CONSOLE DE SAÍDA DOS COMANDOS:" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                    <Button Click="BtnClearNetLog_Click" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextMuted}" FontSize="10" Cursor="Hand">
+                                                        <TextBlock Text="[Limpar Console]" />
+                                                    </Button>
+                                                </Grid>
+                                                <TextBox x:Name="TxtNetworkLog" IsReadOnly="True" Background="Transparent" Foreground="#A5F3FC"
+                                                         BorderThickness="0" FontFamily="Consolas" FontSize="11" Height="85"
+                                                         VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"
+                                                         Text="Pronto para executar diagnósticos. Clique em um dos botões acima para iniciar uma ação." />
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- QUARTO BLOCO: SCANNER DE REDE LOCAL (DESCOBERTA DE IPs, HOSTS, MAC, FABRICANTE) -->
+                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14">
+                                    <StackPanel>
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="📡 SCANNER DE REDE LOCAL (NETWORK DISCOVERY)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentCyan}" />
+                                                    <TextBlock x:Name="TxtScannerCount" Text=" • 0 dispositivos encontrados" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="6,0,0,0" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                                <TextBlock x:Name="TxtLocalSubnetInfo" Text="Identificando sub-rede local..." FontSize="11" Foreground="{StaticResource TextMuted}" Margin="0,2,0,0" />
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                <Button x:Name="BtnStartNetScan" Click="BtnStartNetScan_Click"
+                                                        Background="{StaticResource AccentCyan}" Foreground="#0B0C10" FontWeight="Bold" FontSize="12"
+                                                        Padding="16,6" Margin="0,0,8,0" Cursor="Hand">
+                                                    <TextBlock Text="🔍 Iniciar Varredura de IPs" />
+                                                </Button>
+
+                                                <Button x:Name="BtnCancelNetScan" Click="BtnCancelNetScan_Click" Visibility="Collapsed"
+                                                        Background="#3B181F" Foreground="{StaticResource AccentRed}" BorderBrush="{StaticResource AccentRed}"
+                                                        FontWeight="Bold" FontSize="11" Padding="12,6" Cursor="Hand">
+                                                    <TextBlock Text="⏹️ Cancelar" />
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!-- Barra de Progresso do Scanner -->
+                                        <Grid x:Name="ScannerProgressPanel" Visibility="Collapsed" Margin="0,0,0,10">
+                                            <ProgressBar x:Name="ScannerProgressBar" Style="{StaticResource ModernProgress}" Height="8" Minimum="0" Maximum="100" Value="0" />
+                                            <TextBlock x:Name="ScannerProgressText" Text="Varrendo rede: 0%" FontSize="10" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Right" Margin="0,10,0,0" />
+                                        </Grid>
+
+                                        <!-- Cabeçalho da Tabela -->
+                                        <Border Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1,1,1,0" CornerRadius="6,6,0,0" Padding="10,8">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="40" />
+                                                    <ColumnDefinition Width="130" />
+                                                    <ColumnDefinition Width="180" />
+                                                    <ColumnDefinition Width="150" />
+                                                    <ColumnDefinition Width="130" />
+                                                    <ColumnDefinition Width="70" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Grid.Column="0" Text="TIPO" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                <TextBlock Grid.Column="1" Text="ENDEREÇO IP" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                <TextBlock Grid.Column="2" Text="NOME DO DISPOSITIVO" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                <TextBlock Grid.Column="3" Text="FABRICANTE" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                <TextBlock Grid.Column="4" Text="ENDEREÇO MAC" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                <TextBlock Grid.Column="5" Text="PING" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                <TextBlock Grid.Column="6" Text="SERVIÇOS / PORTAS DETECTADAS" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- Lista de Dispositivos Encontrados -->
+                                        <Border Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1,0,1,1" CornerRadius="0,0,6,6">
+                                            <ListBox x:Name="NetDevicesListBox" Background="Transparent" BorderThickness="0" MaxHeight="280"
+                                                     ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid Margin="4,6">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="40" />
+                                                                <ColumnDefinition Width="130" />
+                                                                <ColumnDefinition Width="180" />
+                                                                <ColumnDefinition Width="150" />
+                                                                <ColumnDefinition Width="130" />
+                                                                <ColumnDefinition Width="70" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <TextBlock Grid.Column="0" Text="{Binding DeviceIcon}" FontSize="15" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="1" Text="{Binding IpAddress}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentCyan}" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="2" Text="{Binding HostName}" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource TextPrimary}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="3" Text="{Binding Manufacturer}" FontSize="11" Foreground="{StaticResource TextSecondary}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="4" Text="{Binding MacAddress}" FontFamily="Consolas" FontSize="11" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="5" Text="{Binding LatencyDisplay}" FontWeight="Bold" FontSize="11" Foreground="{Binding StatusBrush}" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="6" Text="{Binding OpenServices}" FontSize="11" Foreground="{StaticResource TextSecondary}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </TabItem>
             </TabControl>
 
             <!-- ================= FOOTER STATUS BAR ================= -->

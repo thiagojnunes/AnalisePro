@@ -70,6 +70,26 @@ Basta dar um duplo-clique no executável:
 * **Temperaturas:** Monitoramento de temperaturas da CPU, GPU e SSDs com código dinâmico de cores (Verde, Ciano, Laranja, Vermelho).
 * **Rede:** Velocidade instantânea de download e upload (KB/s).
 
+### 7. 🌐 Rede & Diagnóstico TI (Canivete Suíço de Rede)
+* **Diagnóstico Físico do Cabo RJ45 (8 Pinos):**
+  * Detecta se um adaptador Gigabit (1000 Mbps) está operando rebaixado a apenas 100 Mbps ou 10 Mbps.
+  * Alerta o técnico sobre provável falha ou rompimento nos **pinos 4, 5, 7 e 8** (pares azul e marrom) do conector RJ45.
+  * Monitora pacotes com erros de CRC/quadro e pacotes descartados pela placa.
+* **Teste de Conectividade em 3 Camadas:**
+  * Ponto 1: **Roteador Local (Gateway)**
+  * Ponto 2: **Provedor / WAN (Cloudflare 1.1.1.1)**
+  * Ponto 3: **Resolução DNS Web (google.com)**
+  * Isola na hora onde a internet está falhando (Cabo/Wi-Fi vs Provedor vs Servidor DNS).
+* **Ações Rápidas de 1-Clique do Técnico:**
+  * **[🔄 IP Release & Renew]**: Renova a concessão DHCP (`ipconfig /release` e `/renew`).
+  * **[🧹 Limpar Cache DNS]**: Executa `ipconfig /flushdns` para limpar nomes corrompidos.
+  * **[🔌 Reiniciar Adaptador]**: Desativa e reativa a interface de rede para destravar a placa.
+  * **[⚠️ Resetar TCP/IP]**: Redefine o catálogo Winsock e a pilha TCP/IP padrão (`netsh winsock reset` e `netsh int ip reset`).
+  * Console em tempo real integrado exibindo as saídas dos comandos.
+* **Scanner Completo de Rede Local (Network Discovery):**
+  * Varredura paralela ultrarrápida da sub-rede local inteira (ex: `/24`, de `.1` até `.254`).
+  * Tabela com: **Ícone/Tipo**, **Endereço IP**, **Nome do Dispositivo (Hostname)**, **Fabricante** (identificado pelo OUI do MAC), **Endereço MAC físico** (via `SendARP` nativo), **Latência (Ping)** e **Portas de Serviços Abertas** (Web 80, SMB 445, RDP 3389, Print 9100).
+
 ---
 
 ## 🛠️ Compilação

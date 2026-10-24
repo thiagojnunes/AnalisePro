@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Collections.ObjectModel;
 using AnalisePro.Models;
 using AnalisePro.Services;
 
@@ -26,6 +27,8 @@ namespace AnalisePro
 
         private string _currentDiskPath = "C:\\";
         private CancellationTokenSource _diskScanCts;
+        private CancellationTokenSource _netScanCts;
+        private ObservableCollection<NetworkDeviceItem> _discoveredDevices;
 
         private readonly SolidColorBrush _brushGreen = new SolidColorBrush(Color.FromRgb(0x00, 0xE6, 0x76));
         private readonly SolidColorBrush _brushCyan = new SolidColorBrush(Color.FromRgb(0x00, 0xF0, 0xFF));
@@ -53,9 +56,13 @@ namespace AnalisePro
             };
             _timer.Tick += async (s, e) => await RefreshHardwareDataAsync();
 
+            _discoveredDevices = new ObservableCollection<NetworkDeviceItem>();
+            NetDevicesListBox.ItemsSource = _discoveredDevices;
+
             Loaded += async (s, e) =>
             {
                 InitDiskDrivesCombo();
+                InitNetworkTab();
                 await RefreshHardwareDataAsync();
                 _timer.Start();
 
@@ -70,6 +77,11 @@ namespace AnalisePro
                 {
                     _diskScanCts.Cancel();
                     _diskScanCts.Dispose();
+                }
+                if (_netScanCts != null)
+                {
+                    _netScanCts.Cancel();
+                    _netScanCts.Dispose();
                 }
                 _monitorService.Dispose();
             };
@@ -583,6 +595,298 @@ namespace AnalisePro
         private void BtnElevateAdmin_Click(object sender, RoutedEventArgs e)
         {
             AdminHelper.RestartAsAdmin();
+        }
+
+        // ================= ABA 7: REDE & DIAGNÓSTICO TI =================
+
+        private void InitNetworkTab()
+        {
+            try
+            {
+                RefreshNetworkDiagnostics();
+            }
+            catch { }
+        }
+
+        private void RefreshNetworkDiagnostics()
+        {
+            try
+            {
+                var cableList = NetworkToolsService.GetCableDiagnostics();
+                CableDiagItemsControl.ItemsSource = cableList;
+
+                var summary = NetworkToolsService.GetActiveInterfaceSummary();
+                if (!string.IsNullOrEmpty(summary.Name))
+                {
+                    TxtLocalSubnetInfo.Text = string.Format("Placa: {0} ({1}) • Seu IP: {2} • Máscara: {3} • Gateway: {4}",
+                        summary.Name, summary.SpeedDisplay, summary.Ipv4Address, summary.SubnetMask, summary.GatewayAddress);
+                    ConnGatewayAddr.Text = string.IsNullOrEmpty(summary.GatewayAddress) ? "Não Detectado" : summary.GatewayAddress;
+                }
+                else
+                {
+                    TxtLocalSubnetInfo.Text = "Nenhuma placa de rede ativa conectada à rede local.";
+                    ConnGatewayAddr.Text = "Desconectado";
+                }
+            }
+            catch (Exception ex)
+            {
+                AppendNetworkLog("Erro ao ler diagnósticos de rede: " + ex.Message);
+            }
+        }
+
+        private void BtnRefreshNetDiag_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshNetworkDiagnostics();
+            AppendNetworkLog("Leitura física de adaptadores e status do cabo atualizada.");
+        }
+
+        private async void BtnTestConnectivity_Click(object sender, RoutedEventArgs e)
+        {
+            BtnTestConnectivity.IsEnabled = false;
+            ConnGatewayLatency.Text = "...";
+            ConnGatewayStatus.Text = "Testando ping...";
+            ConnWanLatency.Text = "...";
+            ConnWanStatus.Text = "Testando ping...";
+            ConnWebLatency.Text = "...";
+            ConnWebStatus.Text = "Testando resolução...";
+            ConnectivitySummaryBox.Visibility = Visibility.Collapsed;
+
+            try
+            {
+                var results = await NetworkToolsService.RunConnectivityDiagnosticAsync();
+
+                if (results.Count >= 3)
+                {
+                    // Ponto 1: Gateway
+                    ConnGatewayLatency.Text = results[0].LatencyDisplay;
+                    ConnGatewayStatus.Text = results[0].StatusDisplay;
+                    ConnGatewayLatency.Foreground = results[0].StatusBrush;
+
+                    // Ponto 2: WAN / 1.1.1.1
+                    ConnWanLatency.Text = results[1].LatencyDisplay;
+                    ConnWanStatus.Text = results[1].StatusDisplay;
+                    ConnWanLatency.Foreground = results[1].StatusBrush;
+
+                    // Ponto 3: Web / google.com
+                    ConnWebLatency.Text = results[2].LatencyDisplay;
+                    ConnWebStatus.Text = results[2].StatusDisplay;
+                    ConnWebLatency.Foreground = results[2].StatusBrush;
+
+                    // Conclusão do diagnóstico para o técnico
+                    ConnectivitySummaryBox.Visibility = Visibility.Visible;
+                    bool gwOk = results[0].LatencyMs.HasValue;
+                    bool wanOk = results[1].LatencyMs.HasValue;
+                    bool webOk = results[2].LatencyMs.HasValue;
+
+                    if (!gwOk)
+                    {
+                        ConnectivitySummaryBox.BorderBrush = _brushRed;
+                        ConnectivitySummaryText.Text = "❌ Falha no Gateway Local: O computador não consegue falar com o roteador. Verifique o cabo RJ45, Wi-Fi ou se o roteador travou.";
+                        ConnectivitySummaryText.Foreground = _brushRed;
+                    }
+                    else if (!wanOk)
+                    {
+                        ConnectivitySummaryBox.BorderBrush = _brushOrange;
+                        ConnectivitySummaryText.Text = "⚠️ Queda no Provedor de Internet (WAN / Fibra): O roteador local está respondendo normalmente, mas a conexão externa caiu.";
+                        ConnectivitySummaryText.Foreground = _brushOrange;
+                    }
+                    else if (!webOk)
+                    {
+                        ConnectivitySummaryBox.BorderBrush = _brushOrange;
+                        ConnectivitySummaryText.Text = "⚠️ Falha de Resolução DNS: A internet está ativa por IP, mas o servidor DNS não está convertendo os nomes dos sites.";
+                        ConnectivitySummaryText.Foreground = _brushOrange;
+                    }
+                    else
+                    {
+                        ConnectivitySummaryBox.BorderBrush = _brushGreen;
+                        ConnectivitySummaryText.Text = "✅ Conexão com a Internet 100% Operante e Estável (Gateway, WAN e DNS respondendo perfeitamente).";
+                        ConnectivitySummaryText.Foreground = _brushGreen;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AppendNetworkLog("Erro no teste de conectividade: " + ex.Message);
+            }
+            finally
+            {
+                BtnTestConnectivity.IsEnabled = true;
+            }
+        }
+
+        private async void BtnReleaseRenew_Click(object sender, RoutedEventArgs e)
+        {
+            BtnReleaseRenew.IsEnabled = false;
+            AppendNetworkLog("Iniciando renovação de IP via DHCP (ipconfig /release & /renew)...");
+
+            try
+            {
+                string output = await NetworkToolsService.RunIpconfigReleaseRenewAsync();
+                TxtNetworkLog.Text = output;
+                RefreshNetworkDiagnostics();
+            }
+            catch (Exception ex)
+            {
+                AppendNetworkLog("Erro: " + ex.Message);
+            }
+            finally
+            {
+                BtnReleaseRenew.IsEnabled = true;
+            }
+        }
+
+        private async void BtnFlushDns_Click(object sender, RoutedEventArgs e)
+        {
+            BtnFlushDns.IsEnabled = false;
+            AppendNetworkLog("Executando limpeza de cache DNS (ipconfig /flushdns)...");
+
+            try
+            {
+                string output = await NetworkToolsService.RunFlushDnsAsync();
+                TxtNetworkLog.Text = output;
+            }
+            catch (Exception ex)
+            {
+                AppendNetworkLog("Erro: " + ex.Message);
+            }
+            finally
+            {
+                BtnFlushDns.IsEnabled = true;
+            }
+        }
+
+        private async void BtnRestartAdapter_Click(object sender, RoutedEventArgs e)
+        {
+            BtnRestartAdapter.IsEnabled = false;
+            AppendNetworkLog("Tentando reiniciar o adaptador de rede ativo...");
+
+            try
+            {
+                string output = await NetworkToolsService.RestartActiveAdapterAsync();
+                TxtNetworkLog.Text = output;
+                RefreshNetworkDiagnostics();
+            }
+            catch (Exception ex)
+            {
+                AppendNetworkLog("Erro: " + ex.Message);
+            }
+            finally
+            {
+                BtnRestartAdapter.IsEnabled = true;
+            }
+        }
+
+        private async void BtnResetTcpIp_Click(object sender, RoutedEventArgs e)
+        {
+            var mbr = MessageBox.Show(
+                "Essa ação redefinirá o catálogo Winsock e as configurações do protocolo TCP/IP para o padrão original de fábrica.\n\nDeseja continuar?",
+                "Resetar Protocolo TCP/IP",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (mbr != MessageBoxResult.Yes) return;
+
+            BtnResetTcpIp.IsEnabled = false;
+            AppendNetworkLog("Redefinindo pilha TCP/IP e catálogo Winsock...");
+
+            try
+            {
+                string output = await NetworkToolsService.RunResetTcpIpAsync();
+                TxtNetworkLog.Text = output;
+            }
+            catch (Exception ex)
+            {
+                AppendNetworkLog("Erro: " + ex.Message);
+            }
+            finally
+            {
+                BtnResetTcpIp.IsEnabled = true;
+            }
+        }
+
+        private void BtnClearNetLog_Click(object sender, RoutedEventArgs e)
+        {
+            TxtNetworkLog.Text = "";
+        }
+
+        private void AppendNetworkLog(string msg)
+        {
+            string line = string.Format("[{0:HH:mm:ss}] {1}\n", DateTime.Now, msg);
+            TxtNetworkLog.AppendText(line);
+            TxtNetworkLog.ScrollToEnd();
+        }
+
+        private async void BtnStartNetScan_Click(object sender, RoutedEventArgs e)
+        {
+            if (_netScanCts != null)
+            {
+                _netScanCts.Cancel();
+                _netScanCts.Dispose();
+            }
+
+            _netScanCts = new CancellationTokenSource();
+            var token = _netScanCts.Token;
+
+            _discoveredDevices.Clear();
+            TxtScannerCount.Text = " • Iniciando varredura paralela...";
+            BtnStartNetScan.Visibility = Visibility.Collapsed;
+            BtnCancelNetScan.Visibility = Visibility.Visible;
+            ScannerProgressPanel.Visibility = Visibility.Visible;
+            ScannerProgressBar.Value = 0;
+            ScannerProgressText.Text = "Varrendo rede: 0%";
+
+            AppendNetworkLog("Iniciando varredura de dispositivos na sub-rede local...");
+
+            try
+            {
+                await NetworkToolsService.ScanLocalSubnetAsync(
+                    device =>
+                    {
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            _discoveredDevices.Add(device);
+                            TxtScannerCount.Text = string.Format(" • {0} dispositivos encontrados", _discoveredDevices.Count);
+                        }));
+                    },
+                    progressPct =>
+                    {
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            ScannerProgressBar.Value = progressPct;
+                            ScannerProgressText.Text = string.Format("Varrendo rede: {0}% ({1} hosts encontrados)", progressPct, _discoveredDevices.Count);
+                        }));
+                    },
+                    token);
+
+                if (!token.IsCancellationRequested)
+                {
+                    ScannerProgressText.Text = string.Format("Varredura concluída! Total: {0} dispositivos detectados.", _discoveredDevices.Count);
+                    AppendNetworkLog(string.Format("Varredura finalizada. {0} dispositivos ativos identificados na rede.", _discoveredDevices.Count));
+                }
+                else
+                {
+                    ScannerProgressText.Text = "Varredura cancelada pelo usuário.";
+                    AppendNetworkLog("Varredura de rede interrompida.");
+                }
+            }
+            catch (Exception ex)
+            {
+                AppendNetworkLog("Erro na varredura: " + ex.Message);
+            }
+            finally
+            {
+                BtnStartNetScan.Visibility = Visibility.Visible;
+                BtnCancelNetScan.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void BtnCancelNetScan_Click(object sender, RoutedEventArgs e)
+        {
+            if (_netScanCts != null)
+            {
+                _netScanCts.Cancel();
+            }
+            AppendNetworkLog("Cancelando varredura de rede...");
         }
     }
 }
