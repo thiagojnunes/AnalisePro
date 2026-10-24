@@ -85,4 +85,31 @@ namespace AnalisePro.Models
         public string Status { get; set; }
         public string SpeedDisplay { get; set; }
     }
+
+    public class WifiConnectionDetails
+    {
+        public bool HasWifiAdapter { get; set; }
+        public bool IsConnected { get; set; }
+        public string Ssid { get; set; }
+        public string Bssid { get; set; }
+        public string SignalStrength { get; set; }
+        public int SignalPercent { get; set; }
+        public string RadioType { get; set; }
+        public string Channel { get; set; }
+        public string ReceiveRate { get; set; }
+        public string TransmitRate { get; set; }
+        public string Authentication { get; set; }
+        public string Cipher { get; set; }
+
+        public WifiConnectionDetails()
+        {
+            Ssid = "Não Conectado";
+            SignalStrength = "0%";
+            RadioType = "--";
+            Channel = "--";
+            ReceiveRate = "--";
+            TransmitRate = "--";
+            Authentication = "--";
+        }
+    }
 }

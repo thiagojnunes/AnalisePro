@@ -56,11 +56,13 @@
     </Compile>
     <Compile Include="Models\HardwareData.cs" />
     <Compile Include="Models\NetworkDiagnosticModels.cs" />
+    <Compile Include="Models\SerialPortDiagnosticModels.cs" />
     <Compile Include="Services\AdminHelper.cs" />
     <Compile Include="Services\HardwareMonitorService.cs" />
     <Compile Include="Services\HardwareInfoService.cs" />
     <Compile Include="Services\DiskUsageScanner.cs" />
     <Compile Include="Services\NetworkToolsService.cs" />
+    <Compile Include="Services\SerialDiagnosticService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
 

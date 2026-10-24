@@ -6,6 +6,7 @@
         MinHeight="650" MinWidth="920"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
+        ResizeMode="CanResizeWithGrip"
         AllowsTransparency="False"
         Background="{StaticResource BgDark}">
 
@@ -72,17 +73,34 @@
 
                     <!-- Right: Window Buttons -->
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <!-- Botão de Alternar Tema (Dark / Light) -->
+                        <Button x:Name="BtnToggleTheme" Click="BtnToggleTheme_Click" Background="Transparent" BorderThickness="0" Margin="0,0,8,0" Cursor="Hand" ToolTip="Alternar entre Tema Escuro e Claro">
+                            <Border x:Name="ThemeBorder" Background="#1A1D2B" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="8,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="ThemeIcon" Text="☀️" FontSize="11" Margin="0,0,4,0" />
+                                    <TextBlock x:Name="ThemeText" Text="Tema Claro" FontSize="11" Foreground="{StaticResource TextSecondary}" />
+                                </StackPanel>
+                            </Border>
+                        </Button>
+
                         <Button x:Name="BtnPause" Click="BtnPause_Click" Background="Transparent" BorderThickness="0" Margin="0,0,8,0" Cursor="Hand">
                             <Border x:Name="PauseBorder" Background="#1A1D2B" CornerRadius="6" Padding="8,4">
                                 <TextBlock x:Name="PauseText" Text="⏸️ 1s" FontSize="11" Foreground="{StaticResource TextSecondary}" />
                             </Border>
                         </Button>
 
-                        <Button Click="BtnMinimize_Click" Background="Transparent" BorderThickness="0" Width="32" Height="32" Cursor="Hand">
+                        <!-- Botão Minimizar -->
+                        <Button Click="BtnMinimize_Click" Background="Transparent" BorderThickness="0" Width="32" Height="32" Cursor="Hand" ToolTip="Minimizar">
                             <TextBlock Text="—" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Button>
 
-                        <Button Click="BtnClose_Click" Background="Transparent" BorderThickness="0" Width="32" Height="32" Cursor="Hand">
+                        <!-- Botão Maximizar / Restaurar -->
+                        <Button x:Name="BtnMaximize" Click="BtnMaximize_Click" Background="Transparent" BorderThickness="0" Width="32" Height="32" Cursor="Hand" ToolTip="Maximizar / Restaurar">
+                            <TextBlock x:Name="TxtMaximizeIcon" Text="🗖" FontSize="13" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Button>
+
+                        <!-- Botão Fechar -->
+                        <Button Click="BtnClose_Click" Background="Transparent" BorderThickness="0" Width="32" Height="32" Cursor="Hand" ToolTip="Fechar">
                             <TextBlock Text="✕" FontSize="13" FontWeight="Bold" Foreground="#EF4444" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Button>
                     </StackPanel>
@@ -186,7 +204,7 @@
             </Grid>
 
             <!-- ================= MAIN TABBED CONTENT ================= -->
-            <TabControl Grid.Row="2" Margin="16,4,16,10" Background="Transparent" BorderThickness="0">
+            <TabControl x:Name="MainTabControl" Grid.Row="2" Margin="16,4,16,10" Background="Transparent" BorderThickness="0">
                 <TabControl.Resources>
                     <Style TargetType="{x:Type TabItem}">
                         <Setter Property="Foreground" Value="#A0AEC0" />
@@ -570,6 +588,42 @@
                                         </Grid>
                                     </StackPanel>
                                 </Border>
+
+                                <!-- Lista de Todas as Placas de Vídeo (Dedicada & Integrada) -->
+                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,12,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="TODAS AS PLACAS DE VÍDEO &amp; CONTROLADORES DETECTADOS" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentCyan}" Margin="0,0,0,8" />
+                                        <ItemsControl x:Name="AllGpusItemsControl">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,6">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Border Grid.Column="0" Background="#1E293B" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1.5" CornerRadius="8" Width="36" Height="36" Margin="0,0,12,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                                <TextBlock Text="🎮" FontSize="16" FontFamily="Segoe UI Emoji, Segoe UI Symbol" Foreground="{StaticResource AccentCyan}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                            </Border>
+                                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource TextPrimary}" />
+                                                                <TextBlock Text="{Binding VideoProcessor, StringFormat='Processador: {0}'}" FontSize="10" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,0" />
+                                                            </StackPanel>
+                                                            <Border Grid.Column="2" Background="#1A2D22" CornerRadius="4" Padding="8,4" Margin="0,0,10,0" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding AdapterRamGb, StringFormat='VRAM: {0:F1} GB'}" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" />
+                                                            </Border>
+                                                            <Border Grid.Column="3" Background="#1A2733" CornerRadius="4" Padding="8,4" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding DriverVersion, StringFormat='Driver: {0}'}" FontSize="10" Foreground="{StaticResource AccentCyan}" />
+                                                            </Border>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
                         </ScrollViewer>
                     </Border>
@@ -744,6 +798,27 @@
                     <Border Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
+                                <!-- BANNER DE ACESSO RÁPIDO: TESTADOR DE BALANÇAS COMERCIAIS & PLACAS SERIAIS PCI-e -->
+                                <Border Background="#121D24" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,14">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#162E3B" CornerRadius="8" Width="36" Height="36" Margin="0,0,12,0" VerticalAlignment="Center">
+                                            <TextBlock Text="⚖️" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="TESTADOR DE PORTAS SERIAIS &amp; BALANÇAS COMERCIAIS (PLACAS PCI-E)" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentCyan}" />
+                                            <TextBlock Text="Diagnostique portas RS-232, placas PCI-Express x1 e comunique diretamente com balanças Toledo Prix, Filizola e Balmak com envio de ENQ (0x05) e leitura de pinos CTS/DSR." FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,0" />
+                                        </StackPanel>
+                                        <Button x:Name="BtnGoToSerialTab" Click="BtnGoToSerialTab_Click" Grid.Column="2" Background="{StaticResource AccentCyan}" Foreground="#0B0C10" FontWeight="Bold" FontSize="11" Padding="12,6" Cursor="Hand" VerticalAlignment="Center">
+                                            <TextBlock Text="🔌 Abrir Testador Serial" />
+                                        </Button>
+                                    </Grid>
+                                </Border>
+
                                 <TextBlock Text="TODOS OS PERIFÉRICOS E CONTROLADORES DETECTADOS" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentCyan}" Margin="0,0,0,12" />
 
                                 <ItemsControl x:Name="PeripheralsItemsControl">
@@ -757,7 +832,9 @@
                                                         <ColumnDefinition Width="Auto" />
                                                     </Grid.ColumnDefinitions>
 
-                                                    <TextBlock Text="{Binding Icon}" FontSize="18" Margin="0,0,12,0" VerticalAlignment="Center" />
+                                                    <Border Grid.Column="0" Background="#1E293B" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1.5" CornerRadius="8" Width="38" Height="38" Margin="0,0,12,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Icon}" FontSize="18" FontFamily="Segoe UI Emoji, Segoe UI Symbol" Foreground="{StaticResource AccentCyan}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                    </Border>
 
                                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                                         <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource TextPrimary}" />
@@ -784,6 +861,99 @@
                     <Border Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
+                                <!-- BANNER DE DESTAQUE: STATUS DO LINK (GIGABIT 1000M / 100M / WI-FI) -->
+                                <Border x:Name="NetLinkStatusBanner" Background="#142820" BorderBrush="{StaticResource AccentGreen}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Background="#1C382A" CornerRadius="8" Width="36" Height="36" Margin="0,0,12,0" VerticalAlignment="Center">
+                                            <TextBlock x:Name="NetLinkStatusIcon" Text="🟢" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock x:Name="NetLinkStatusTitle" Text="LINK GIGABIT OPERANDO A 100% (1000 Mbps Full-Duplex)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentGreen}" />
+                                                <Border Background="#1A3326" CornerRadius="4" Padding="6,2" Margin="8,0,0,0">
+                                                    <TextBlock x:Name="NetLinkStatusBadge" Text="TODOS OS 8 PINOS OK" FontSize="9" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" />
+                                                </Border>
+                                            </StackPanel>
+                                            <TextBlock x:Name="NetLinkStatusDetail" Text="Cabo de rede RJ45 em perfeita negociação com o switch/roteador. 4 pares ativos." FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                                        </StackPanel>
+
+                                        <Border Grid.Column="2" Background="#101D17" BorderBrush="{StaticResource AccentGreen}" BorderThickness="1" CornerRadius="6" Padding="12,6" VerticalAlignment="Center">
+                                            <TextBlock x:Name="NetLinkSpeedMetric" Text="1000 Mbps" FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+
+                                <!-- CARD INFORMATIVO DE WI-FI (SE DISPONÍVEL) -->
+                                <Border x:Name="WifiDetailsBox" Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <Grid Margin="0,0,0,8">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="📶 DIAGNÓSTICO DE REDE SEM FIO (WI-FI)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentPurple}" />
+                                                <TextBlock x:Name="TxtWifiStatus" Text=" • Conectado" FontSize="11" Foreground="{StaticResource AccentGreen}" Margin="6,0,0,0" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                            <Button Click="BtnRefreshWifi_Click" Grid.Column="1" Background="#1E2235" Foreground="{StaticResource AccentPurple}" BorderBrush="{StaticResource BorderCard}" Padding="10,4" FontSize="11" Cursor="Hand">
+                                                <TextBlock Text="🔄 Atualizar Wi-Fi" />
+                                            </Button>
+                                        </Grid>
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- SSID -->
+                                            <Border Grid.Column="0" Background="#10121C" CornerRadius="6" Padding="10" Margin="0,0,4,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="NOME DA REDE (SSID)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                    <TextBlock x:Name="WifiSsidVal" Text="Carregando..." FontSize="12" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" />
+                                                    <TextBlock x:Name="WifiBssidVal" Text="BSSID: --" FontSize="9" Foreground="{StaticResource TextMuted}" Margin="0,1,0,0" />
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Sinal -->
+                                            <Border Grid.Column="1" Background="#10121C" CornerRadius="6" Padding="10" Margin="2,0,2,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="FORÇA DO SINAL" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                    <TextBlock x:Name="WifiSignalVal" Text="-- %" FontSize="13" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" Margin="0,2,0,0" />
+                                                    <TextBlock x:Name="WifiSecurityVal" Text="WPA2-Personal" FontSize="9" Foreground="{StaticResource TextMuted}" Margin="0,1,0,0" />
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Canal & Frequência -->
+                                            <Border Grid.Column="2" Background="#10121C" CornerRadius="6" Padding="10" Margin="2,0,2,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="CANAL &amp; PADRÃO" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                    <TextBlock x:Name="WifiChannelVal" Text="Canal --" FontSize="12" FontWeight="Bold" Foreground="{StaticResource AccentCyan}" Margin="0,2,0,0" />
+                                                    <TextBlock x:Name="WifiStandardVal" Text="802.11ax (Wi-Fi 6)" FontSize="9" Foreground="{StaticResource TextMuted}" Margin="0,1,0,0" />
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Velocidade Tx/Rx -->
+                                            <Border Grid.Column="3" Background="#10121C" CornerRadius="6" Padding="10" Margin="4,0,0,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="VELOCIDADE LINK (TX/RX)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                    <TextBlock x:Name="WifiSpeedVal" Text="-- Mbps" FontSize="12" FontWeight="Bold" Foreground="{StaticResource AccentOrange}" Margin="0,2,0,0" />
+                                                    <TextBlock Text="Negociado com roteador" FontSize="9" Foreground="{StaticResource TextMuted}" Margin="0,1,0,0" />
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
                                 <!-- TOPO: Status da Conexão Ativa & Diagnóstico Físico do Cabo RJ45 -->
                                 <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
                                     <StackPanel>
@@ -1056,7 +1226,9 @@
                                                                 <ColumnDefinition Width="*" />
                                                             </Grid.ColumnDefinitions>
 
-                                                            <TextBlock Grid.Column="0" Text="{Binding DeviceIcon}" FontSize="15" VerticalAlignment="Center" />
+                                                            <Border Grid.Column="0" Background="#1C2133" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1" CornerRadius="13" Width="26" Height="26" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding DeviceIcon}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                            </Border>
                                                             <TextBlock Grid.Column="1" Text="{Binding IpAddress}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentCyan}" VerticalAlignment="Center" />
                                                             <TextBlock Grid.Column="2" Text="{Binding HostName}" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource TextPrimary}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
                                                             <TextBlock Grid.Column="3" Text="{Binding Manufacturer}" FontSize="11" Foreground="{StaticResource TextSecondary}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
@@ -1067,6 +1239,238 @@
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
                                             </ListBox>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </TabItem>
+
+                <!-- TAB 8: PORTAS SERIAIS & TESTE DE I/O (BALANÇAS E PLACAS PCI) -->
+                <TabItem Header="🔌 Portas Seriais &amp; Balanças">
+                    <Border Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <!-- TOPO: DETECÇÃO DE PLACAS PCI SERIAL E PORTAS COM -->
+                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="🔌 PORTAS SERIAIS &amp; PLACAS PCI-E DETECTADAS" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentCyan}" />
+                                                <TextBlock Text=" • Diagnóstico de hardware RS-232" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                            <Button x:Name="BtnRefreshSerialPorts" Click="BtnRefreshSerialPorts_Click" Grid.Column="1"
+                                                    Background="#1E2235" Foreground="{StaticResource AccentCyan}" BorderBrush="{StaticResource BorderCard}"
+                                                    Padding="10,4" FontSize="11" FontWeight="SemiBold" Cursor="Hand">
+                                                <TextBlock Text="🔄 Atualizar Portas" />
+                                            </Button>
+                                        </Grid>
+
+                                        <ItemsControl x:Name="SerialPortsItemsControl">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#10121C" BorderBrush="{Binding StatusBrush}" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,6">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="70" />
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <Border Background="#1E2235" CornerRadius="4" Padding="8,4" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding PortName}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentCyan}" />
+                                                            </Border>
+
+                                                            <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding Description}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource TextPrimary}" />
+                                                                <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                                                    <TextBlock Text="{Binding CardTypeDisplay}" FontSize="10" Foreground="{StaticResource AccentPurple}" Margin="0,0,12,0" />
+                                                                    <TextBlock Text="{Binding Manufacturer, StringFormat='Fabricante: {0}'}" FontSize="10" Foreground="{StaticResource TextMuted}" Margin="0,0,12,0" />
+                                                                    <TextBlock Text="{Binding HardwareId, StringFormat='ID PnP: {0}'}" FontSize="10" Foreground="{StaticResource TextMuted}" />
+                                                                </StackPanel>
+                                                            </StackPanel>
+
+                                                            <Border Grid.Column="2" Background="#142820" CornerRadius="4" Padding="8,3" Margin="0,0,8,0" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding Status, StringFormat='Driver: {0}'}" FontSize="10" FontWeight="SemiBold" Foreground="{Binding StatusBrush}" />
+                                                            </Border>
+
+                                                            <Button Grid.Column="3" Click="BtnSelectSerialPort_Click" Tag="{Binding PortName}"
+                                                                    Background="#1A2733" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1"
+                                                                    Foreground="{StaticResource AccentCyan}" FontSize="11" FontWeight="SemiBold"
+                                                                    Padding="10,4" Cursor="Hand" VerticalAlignment="Center">
+                                                                <TextBlock Text="Selecionar p/ Teste" />
+                                                            </Button>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- TESTADOR / MONITOR INTERATIVO DE BALANÇA SERIAL (PCI x1) -->
+                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14">
+                                    <StackPanel>
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="⚖️ TESTADOR DE BALANÇAS COMERCIAIS &amp; COMUNICAÇÃO SERIAL (RS-232)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentGreen}" VerticalAlignment="Center" />
+                                            <Border x:Name="SerialPortStatusBadge" Grid.Column="1" Background="#261A1A" BorderBrush="{StaticResource AccentRed}" BorderThickness="1" CornerRadius="4" Padding="10,3">
+                                                <TextBlock x:Name="SerialPortStatusText" Text="Porta Fechada" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource AccentRed}" />
+                                            </Border>
+                                        </Grid>
+
+                                        <!-- Controles de Configuração da Balança -->
+                                        <Grid Margin="0,0,0,12">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="130" />
+                                                <ColumnDefinition Width="180" />
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="120" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Porta COM -->
+                                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                                <TextBlock Text="PORTA COM:" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,4" />
+                                                <ComboBox x:Name="SerialPortCombo" Background="#10121C" Foreground="{StaticResource TextPrimary}" Height="28" />
+                                            </StackPanel>
+
+                                            <!-- Baud Rate / Balança Preset -->
+                                            <StackPanel Grid.Column="1" Margin="0,0,8,0">
+                                                <TextBlock Text="BAUD RATE (VELOCIDADE):" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,4" />
+                                                <ComboBox x:Name="SerialBaudCombo" Background="#10121C" Foreground="{StaticResource TextPrimary}" Height="28">
+                                                    <ComboBoxItem Content="9600 (Toledo/Prix/Filizola)" IsSelected="True" Tag="9600" />
+                                                    <ComboBoxItem Content="4800 (Balanças Antigas)" Tag="4800" />
+                                                    <ComboBoxItem Content="2400 (Balmak/Urano)" Tag="2400" />
+                                                    <ComboBoxItem Content="19200 (Alta Velocidade)" Tag="19200" />
+                                                    <ComboBoxItem Content="115200 (Automação)" Tag="115200" />
+                                                </ComboBox>
+                                            </StackPanel>
+
+                                            <!-- Data Bits -->
+                                            <StackPanel Grid.Column="2" Margin="0,0,8,0">
+                                                <TextBlock Text="DATA BITS:" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,4" />
+                                                <ComboBox x:Name="SerialDataBitsCombo" Background="#10121C" Foreground="{StaticResource TextPrimary}" Height="28">
+                                                    <ComboBoxItem Content="8" IsSelected="True" />
+                                                    <ComboBoxItem Content="7" />
+                                                </ComboBox>
+                                            </StackPanel>
+
+                                            <!-- Paridade -->
+                                            <StackPanel Grid.Column="3" Margin="0,0,8,0">
+                                                <TextBlock Text="PARIDADE:" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,4" />
+                                                <ComboBox x:Name="SerialParityCombo" Background="#10121C" Foreground="{StaticResource TextPrimary}" Height="28">
+                                                    <ComboBoxItem Content="None (Nenhuma)" IsSelected="True" />
+                                                    <ComboBoxItem Content="Even (Par)" />
+                                                    <ComboBoxItem Content="Odd (Ímpar)" />
+                                                </ComboBox>
+                                            </StackPanel>
+
+                                            <!-- Stop Bits -->
+                                            <StackPanel Grid.Column="4" Margin="0,0,8,0">
+                                                <TextBlock Text="STOP BITS:" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,4" />
+                                                <ComboBox x:Name="SerialStopBitsCombo" Background="#10121C" Foreground="{StaticResource TextPrimary}" Height="28">
+                                                    <ComboBoxItem Content="1" IsSelected="True" />
+                                                    <ComboBoxItem Content="2" />
+                                                </ComboBox>
+                                            </StackPanel>
+
+                                            <!-- Botão Conectar / Desconectar -->
+                                            <StackPanel Grid.Column="5" VerticalAlignment="Bottom">
+                                                <Button x:Name="BtnToggleSerialOpen" Click="BtnToggleSerialOpen_Click"
+                                                        Background="{StaticResource AccentGreen}" Foreground="#0B0C10" FontWeight="Bold" FontSize="11"
+                                                        Height="28" Padding="10,0" Cursor="Hand">
+                                                    <TextBlock x:Name="TxtToggleSerialBtn" Text="🔌 Conectar e Escutar" />
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!-- Pinos de Controle de Hardware (DTR & RTS) -->
+                                        <Border Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,12">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <TextBlock Text="SINAIS DE ALIMENTAÇÃO DA BALANÇA:" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="0,0,12,0" VerticalAlignment="Center" />
+                                                    <CheckBox x:Name="ChkSerialDtr" Content="Ativar DTR (Data Terminal Ready)" IsChecked="True" Foreground="{StaticResource TextSecondary}" FontSize="11" Margin="0,0,16,0" VerticalAlignment="Center" />
+                                                    <CheckBox x:Name="ChkSerialRts" Content="Ativar RTS (Request To Send)" IsChecked="True" Foreground="{StaticResource TextSecondary}" FontSize="11" VerticalAlignment="Center" />
+                                                </StackPanel>
+
+                                                <TextBlock x:Name="TxtSerialPinStatus" Grid.Column="1" Text="Pinos de Hardware: CTS: -- • DSR: -- • CD: --" FontSize="10" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- BOTÕES DE TESTE RÁPIDO DE BALANÇAS (1-CLIQUE) -->
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Pedir Peso Toledo Prix (0x05 ENQ) -->
+                                            <Button Click="BtnSendToledoEnq_Click" Grid.Column="0" Margin="0,0,6,0"
+                                                    Background="#1A2D22" BorderBrush="{StaticResource AccentGreen}" BorderThickness="1"
+                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                <StackPanel HorizontalAlignment="Center">
+                                                    <TextBlock Text="⚖️ Pedir Peso (Toledo / Prix)" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentGreen}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="Envia byte ENQ (0x05)" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- Pedir Peso Filizola (P\r\n) -->
+                                            <Button Click="BtnSendFilizola_Click" Grid.Column="1" Margin="3,0,3,0"
+                                                    Background="#1B2230" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1"
+                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                <StackPanel HorizontalAlignment="Center">
+                                                    <TextBlock Text="⚖️ Pedir Peso (Filizola / Elgin)" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentCyan}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="Envia comando 'P' (ASCII)" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- Pedir Peso Balmak / Urano (W\r\n) -->
+                                            <Button Click="BtnSendBalmak_Click" Grid.Column="2" Margin="3,0,6,0"
+                                                    Background="#251C2C" BorderBrush="{StaticResource AccentPurple}" BorderThickness="1"
+                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                <StackPanel HorizontalAlignment="Center">
+                                                    <TextBlock Text="⚖️ Pedir Peso (Balmak / Urano)" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentPurple}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="Envia comando 'W' (ASCII)" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- Botão Limpar Tela -->
+                                            <Button Click="BtnClearSerialLog_Click" Grid.Column="3" Background="#1E2235" BorderThickness="0"
+                                                    Foreground="{StaticResource TextMuted}" FontSize="11" Padding="12,0" Cursor="Hand">
+                                                <TextBlock Text="🧹 Limpar Dados" />
+                                            </Button>
+                                        </Grid>
+
+                                        <!-- Terminal de Recepção de Dados da Balança -->
+                                        <Border Background="#090A0F" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10">
+                                            <StackPanel>
+                                                <Grid Margin="0,0,0,6">
+                                                    <TextBlock Text="DADOS RECEBIDOS DA BALANÇA / DISPOSITIVO SERIAL (ASCII E HEX):" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                    <TextBlock x:Name="TxtSerialBytesCount" Text="0 bytes recebidos" FontSize="10" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Right" />
+                                                </Grid>
+                                                <TextBox x:Name="TxtSerialReceivedData" IsReadOnly="True" Background="Transparent" Foreground="#4ADE80"
+                                                         BorderThickness="0" FontFamily="Consolas" FontSize="12" Height="140"
+                                                         VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"
+                                                         Text="Aguardando conexão com a porta serial... Selecione a porta da placa PCI e clique em 'Conectar e Escutar'." />
+                                            </StackPanel>
                                         </Border>
                                     </StackPanel>
                                 </Border>

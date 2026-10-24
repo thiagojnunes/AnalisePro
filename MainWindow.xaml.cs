@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Collections.ObjectModel;
+using System.IO.Ports;
 using AnalisePro.Models;
 using AnalisePro.Services;
 
@@ -29,6 +30,10 @@ namespace AnalisePro
         private CancellationTokenSource _diskScanCts;
         private CancellationTokenSource _netScanCts;
         private ObservableCollection<NetworkDeviceItem> _discoveredDevices;
+        private bool _isDarkMode = true;
+        private SerialDiagnosticService _serialService;
+        private long _serialReceivedBytesTotal = 0;
+        private int _pingLoopCounter = 0;
 
         private readonly SolidColorBrush _brushGreen = new SolidColorBrush(Color.FromRgb(0x00, 0xE6, 0x76));
         private readonly SolidColorBrush _brushCyan = new SolidColorBrush(Color.FromRgb(0x00, 0xF0, 0xFF));
@@ -59,10 +64,15 @@ namespace AnalisePro
             _discoveredDevices = new ObservableCollection<NetworkDeviceItem>();
             NetDevicesListBox.ItemsSource = _discoveredDevices;
 
+            _serialService = new SerialDiagnosticService();
+            _serialService.OnDataReceived += HandleSerialDataReceived;
+            _serialService.OnError += msg => Dispatcher.Invoke(new Action(() => AppendSerialLog("ERRO SERIAL: " + msg)));
+
             Loaded += async (s, e) =>
             {
                 InitDiskDrivesCombo();
                 InitNetworkTab();
+                InitSerialTab();
                 await RefreshHardwareDataAsync();
                 _timer.Start();
 
@@ -83,9 +93,15 @@ namespace AnalisePro
                     _netScanCts.Cancel();
                     _netScanCts.Dispose();
                 }
+                if (_serialService != null)
+                {
+                    _serialService.Dispose();
+                }
                 _monitorService.Dispose();
             };
         }
+
+        private bool _isPinging = false;
 
         private async Task RefreshHardwareDataAsync()
         {
@@ -96,6 +112,12 @@ namespace AnalisePro
             {
                 var snapshot = await Task.Run(() => _monitorService.GetSnapshot());
                 UpdateUi(snapshot);
+
+                // Disparo de ping contínuo periódico junto com os outros sensores (a cada ~2s)
+                if (++_pingLoopCounter % 2 == 0)
+                {
+                    var taskPing = UpdateContinuousPingAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -104,6 +126,42 @@ namespace AnalisePro
             finally
             {
                 _isUpdating = false;
+            }
+        }
+
+        private async Task UpdateContinuousPingAsync()
+        {
+            if (_isPinging) return;
+            _isPinging = true;
+
+            try
+            {
+                var results = await NetworkToolsService.RunConnectivityDiagnosticAsync();
+                if (results != null && results.Count >= 3)
+                {
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        // 1. Gateway
+                        ConnGatewayLatency.Text = results[0].LatencyDisplay;
+                        ConnGatewayStatus.Text = results[0].StatusDisplay;
+                        ConnGatewayLatency.Foreground = results[0].StatusBrush;
+
+                        // 2. WAN (1.1.1.1)
+                        ConnWanLatency.Text = results[1].LatencyDisplay;
+                        ConnWanStatus.Text = results[1].StatusDisplay;
+                        ConnWanLatency.Foreground = results[1].StatusBrush;
+
+                        // 3. DNS Web (google.com)
+                        ConnWebLatency.Text = results[2].LatencyDisplay;
+                        ConnWebStatus.Text = results[2].StatusDisplay;
+                        ConnWebLatency.Foreground = results[2].StatusBrush;
+                    }));
+                }
+            }
+            catch { }
+            finally
+            {
+                _isPinging = false;
             }
         }
 
@@ -146,8 +204,8 @@ namespace AnalisePro
             KpiRamLoad.Text = string.Format("{0:F0} %", snapshot.Memory.UsagePercent);
             KpiRamDetails.Text = string.Format("{0:F1} / {1:F1} GB", snapshot.Memory.UsedGb, snapshot.Memory.TotalGb);
 
-            // 5. KPI: GPU
-            var mainGpu = snapshot.Gpus.FirstOrDefault();
+            // 5. KPI: GPU (Prioriza placa dedicada se houver)
+            var mainGpu = snapshot.Gpus.FirstOrDefault(g => !g.IsIntegrated) ?? snapshot.Gpus.FirstOrDefault();
             if (mainGpu != null)
             {
                 if (mainGpu.Temperature.HasValue && mainGpu.Temperature.Value > 0)
@@ -271,8 +329,12 @@ namespace AnalisePro
                 // RAM Modules
                 RamModulesItemsControl.ItemsSource = snapshot.RamModules;
 
-                // GPU Specs
-                var gpuSpec = snapshot.GpuSpecs.FirstOrDefault();
+                // GPU Specs (Todas as placas de vídeo instaladas)
+                AllGpusItemsControl.ItemsSource = snapshot.GpuSpecs;
+
+                var gpuSpec = snapshot.GpuSpecs.FirstOrDefault(g => !string.IsNullOrEmpty(g.Name) && !g.Name.ToLower().Contains("integrated") && !g.Name.ToLower().Contains("intel") && !g.Name.ToLower().Contains("basic")) 
+                    ?? snapshot.GpuSpecs.FirstOrDefault();
+
                 if (gpuSpec != null)
                 {
                     GpuFullModel.Text = gpuSpec.Name;
@@ -561,6 +623,11 @@ namespace AnalisePro
 
         private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (e.ClickCount == 2)
+            {
+                BtnMaximize_Click(sender, e);
+                return;
+            }
             if (e.ChangedButton == MouseButton.Left)
             {
                 DragMove();
@@ -570,6 +637,62 @@ namespace AnalisePro
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
+        }
+
+        private void BtnMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+                TxtMaximizeIcon.Text = "🗖";
+            }
+            else
+            {
+                WindowState = WindowState.Maximized;
+                TxtMaximizeIcon.Text = "🗗";
+            }
+        }
+
+        private void BtnToggleTheme_Click(object sender, RoutedEventArgs e)
+        {
+            _isDarkMode = !_isDarkMode;
+            ApplyTheme(_isDarkMode);
+        }
+
+        private void ApplyTheme(bool isDark)
+        {
+            try
+            {
+                if (isDark)
+                {
+                    ThemeIcon.Text = "☀️";
+                    ThemeText.Text = "Tema Claro";
+                    ThemeBorder.Background = new SolidColorBrush(Color.FromRgb(0x1A, 0x1D, 0x2B));
+
+                    Application.Current.Resources["BgDark"] = new SolidColorBrush(Color.FromRgb(0x0B, 0x0C, 0x10));
+                    Application.Current.Resources["BgCard"] = new SolidColorBrush(Color.FromRgb(0x13, 0x15, 0x1F));
+                    Application.Current.Resources["BgCardHover"] = new SolidColorBrush(Color.FromRgb(0x1B, 0x1E, 0x2E));
+                    Application.Current.Resources["BorderCard"] = new SolidColorBrush(Color.FromRgb(0x22, 0x26, 0x38));
+                    Application.Current.Resources["TextPrimary"] = new SolidColorBrush(Color.FromRgb(0xFF, 0xFF, 0xFF));
+                    Application.Current.Resources["TextSecondary"] = new SolidColorBrush(Color.FromRgb(0x94, 0xA3, 0xB8));
+                    Application.Current.Resources["TextMuted"] = new SolidColorBrush(Color.FromRgb(0x64, 0x74, 0x8B));
+                }
+                else
+                {
+                    ThemeIcon.Text = "🌙";
+                    ThemeText.Text = "Tema Escuro";
+                    ThemeBorder.Background = new SolidColorBrush(Color.FromRgb(0xE2, 0xE8, 0xF0));
+
+                    Application.Current.Resources["BgDark"] = new SolidColorBrush(Color.FromRgb(0xF1, 0xF5, 0xF9));
+                    Application.Current.Resources["BgCard"] = new SolidColorBrush(Color.FromRgb(0xFF, 0xFF, 0xFF));
+                    Application.Current.Resources["BgCardHover"] = new SolidColorBrush(Color.FromRgb(0xF8, 0xFA, 0xFC));
+                    Application.Current.Resources["BorderCard"] = new SolidColorBrush(Color.FromRgb(0xCB, 0xD5, 0xE1));
+                    Application.Current.Resources["TextPrimary"] = new SolidColorBrush(Color.FromRgb(0x0F, 0x17, 0x2A));
+                    Application.Current.Resources["TextSecondary"] = new SolidColorBrush(Color.FromRgb(0x47, 0x55, 0x69));
+                    Application.Current.Resources["TextMuted"] = new SolidColorBrush(Color.FromRgb(0x64, 0x74, 0x8B));
+                }
+            }
+            catch { }
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
@@ -608,6 +731,11 @@ namespace AnalisePro
             catch { }
         }
 
+        private void BtnGoToSerialTab_Click(object sender, RoutedEventArgs e)
+        {
+            MainTabControl.SelectedIndex = 7;
+        }
+
         private void RefreshNetworkDiagnostics()
         {
             try
@@ -627,6 +755,65 @@ namespace AnalisePro
                     TxtLocalSubnetInfo.Text = "Nenhuma placa de rede ativa conectada à rede local.";
                     ConnGatewayAddr.Text = "Desconectado";
                 }
+
+                // Destaque do Banner: Gigabit vs 100 Mbps vs Wi-Fi
+                var activeAdapter = cableList.FirstOrDefault(c => c.IsConnected);
+                if (activeAdapter != null)
+                {
+                    NetLinkSpeedMetric.Text = activeAdapter.LinkSpeedDisplay;
+                    NetLinkSpeedMetric.Foreground = activeAdapter.StatusBrush;
+
+                    bool isGigabit = activeAdapter.LinkSpeedBps >= 1000000000;
+                    if (isGigabit)
+                    {
+                        NetLinkStatusBanner.Background = new SolidColorBrush(Color.FromRgb(0x14, 0x28, 0x20));
+                        NetLinkStatusBanner.BorderBrush = _brushGreen;
+                        NetLinkStatusIcon.Text = "⚡";
+                        NetLinkStatusTitle.Text = "CONEXÃO GIGABIT OPERANDO A 100% (1000 Mbps Full-Duplex)";
+                        NetLinkStatusTitle.Foreground = _brushGreen;
+                        NetLinkStatusBadge.Text = "TODOS OS 4 PARES (8 FIOS) ÍNTEGROS";
+                        NetLinkStatusBadge.Foreground = _brushGreen;
+                        NetLinkStatusDetail.Text = "Cabo RJ45 negociado na velocidade Gigabit máxima. Os 4 pares de fios (1-2, 3-6, 4-5, 7-8) estão comunicando perfeitamente com o switch ou roteador.";
+                    }
+                    else if (activeAdapter.HasCableWarning || (activeAdapter.IsGigabitCapable && activeAdapter.LinkSpeedBps < 1000000000))
+                    {
+                        NetLinkStatusBanner.Background = new SolidColorBrush(Color.FromRgb(0x2D, 0x1F, 0x14));
+                        NetLinkStatusBanner.BorderBrush = _brushOrange;
+                        NetLinkStatusIcon.Text = "⚠️";
+                        NetLinkStatusTitle.Text = "⚠️ CONEXÃO LIMITADA EM " + activeAdapter.LinkSpeedDisplay + " (ALERTA DE CABO)";
+                        NetLinkStatusTitle.Foreground = _brushOrange;
+                        NetLinkStatusBadge.Text = "POSSÍVEL FALHA NOS PINOS 4, 5, 7 OU 8";
+                        NetLinkStatusBadge.Foreground = _brushOrange;
+                        NetLinkStatusDetail.Text = "A sua placa suporta Gigabit (1000 Mbps), mas negociou em 100 Mbps! Isso indica que o cabo RJ45 está com algum dos pinos azuis ou marrons partido, mau contato na tomada ou o switch do cliente é 100M.";
+                    }
+                    else
+                    {
+                        NetLinkStatusBanner.Background = new SolidColorBrush(Color.FromRgb(0x16, 0x19, 0x26));
+                        NetLinkStatusBanner.BorderBrush = activeAdapter.StatusBrush;
+                        NetLinkStatusIcon.Text = "🌐";
+                        NetLinkStatusTitle.Text = "Link: " + activeAdapter.AdapterName + " (" + activeAdapter.LinkSpeedDisplay + ")";
+                        NetLinkStatusTitle.Foreground = activeAdapter.StatusBrush;
+                        NetLinkStatusBadge.Text = activeAdapter.WarningTitle;
+                        NetLinkStatusBadge.Foreground = activeAdapter.StatusBrush;
+                        NetLinkStatusDetail.Text = activeAdapter.PinDiagnosticMessage;
+                    }
+                }
+                else
+                {
+                    NetLinkStatusBanner.Background = new SolidColorBrush(Color.FromRgb(0x16, 0x19, 0x26));
+                    NetLinkStatusBanner.BorderBrush = _brushMuted;
+                    NetLinkStatusIcon.Text = "🔌";
+                    NetLinkStatusTitle.Text = "NENHUM CABO DE REDE CONECTADO";
+                    NetLinkStatusTitle.Foreground = _brushMuted;
+                    NetLinkStatusBadge.Text = "DESCONECTADO";
+                    NetLinkStatusBadge.Foreground = _brushMuted;
+                    NetLinkStatusDetail.Text = "Conecte um cabo RJ45 ou utilize a rede Wi-Fi para diagnosticar a conexão.";
+                    NetLinkSpeedMetric.Text = "0 Mbps";
+                    NetLinkSpeedMetric.Foreground = _brushMuted;
+                }
+
+                // Atualizar diagnóstico do Wi-Fi
+                RefreshWifiInfo();
             }
             catch (Exception ex)
             {
@@ -887,6 +1074,281 @@ namespace AnalisePro
                 _netScanCts.Cancel();
             }
             AppendNetworkLog("Cancelando varredura de rede...");
+        }
+
+        // ================= DIAGNÓSTICO WI-FI =================
+
+        private void BtnRefreshWifi_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshWifiInfo();
+            AppendNetworkLog("Diagnóstico do adaptador Wi-Fi atualizado.");
+        }
+
+        private void RefreshWifiInfo()
+        {
+            try
+            {
+                var wifi = NetworkToolsService.GetWifiDetails();
+                if (wifi != null && wifi.IsConnected)
+                {
+                    WifiDetailsBox.Visibility = Visibility.Visible;
+                    TxtWifiStatus.Text = " • Conectado à rede sem fio";
+                    TxtWifiStatus.Foreground = _brushGreen;
+                    WifiSsidVal.Text = string.IsNullOrEmpty(wifi.Ssid) ? "Rede Oculta" : wifi.Ssid;
+                    WifiBssidVal.Text = "BSSID: " + (string.IsNullOrEmpty(wifi.Bssid) ? "--" : wifi.Bssid);
+                    WifiSignalVal.Text = string.Format("{0} %", wifi.SignalPercent);
+                    WifiSignalVal.Foreground = wifi.SignalPercent > 60 ? _brushGreen : (wifi.SignalPercent > 30 ? _brushOrange : _brushRed);
+                    WifiSecurityVal.Text = string.Format("{0} ({1})", wifi.Authentication, wifi.Cipher);
+                    WifiChannelVal.Text = "Canal " + wifi.Channel;
+                    WifiStandardVal.Text = wifi.RadioType;
+                    WifiSpeedVal.Text = string.Format("Tx: {0} / Rx: {1}", wifi.TransmitRate, wifi.ReceiveRate);
+                }
+                else
+                {
+                    TxtWifiStatus.Text = " • Desconectado ou sem placa Wi-Fi";
+                    TxtWifiStatus.Foreground = _brushMuted;
+                    WifiSsidVal.Text = "Wi-Fi Desconectado";
+                    WifiBssidVal.Text = "BSSID: --";
+                    WifiSignalVal.Text = "-- %";
+                    WifiSignalVal.Foreground = _brushMuted;
+                    WifiChannelVal.Text = "Canal --";
+                    WifiStandardVal.Text = "802.11";
+                    WifiSpeedVal.Text = "-- Mbps";
+                }
+            }
+            catch (Exception ex)
+            {
+                AppendNetworkLog("Erro ao diagnosticar Wi-Fi: " + ex.Message);
+            }
+        }
+
+        // ================= ABA 8: PORTAS SERIAIS & BALANÇAS COMERCIAIS =================
+
+        private void InitSerialTab()
+        {
+            try
+            {
+                RefreshSerialPortsList();
+            }
+            catch { }
+        }
+
+        private void RefreshSerialPortsList()
+        {
+            try
+            {
+                var ports = SerialDiagnosticService.GetAvailableSerialPorts();
+                SerialPortsItemsControl.ItemsSource = ports;
+
+                string currentSelected = SerialPortCombo.SelectedItem as string;
+                SerialPortCombo.Items.Clear();
+
+                foreach (var p in ports)
+                {
+                    SerialPortCombo.Items.Add(p.PortName);
+                }
+
+                if (!string.IsNullOrEmpty(currentSelected) && SerialPortCombo.Items.Contains(currentSelected))
+                {
+                    SerialPortCombo.SelectedItem = currentSelected;
+                }
+                else if (SerialPortCombo.Items.Count > 0)
+                {
+                    SerialPortCombo.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                AppendSerialLog("Erro ao listar portas seriais: " + ex.Message);
+            }
+        }
+
+        private void BtnRefreshSerialPorts_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshSerialPortsList();
+            AppendSerialLog("Lista de portas seriais e placas PCI-Express atualizada.");
+        }
+
+        private void BtnSelectSerialPort_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            string portName = btn != null ? btn.Tag as string : null;
+            if (!string.IsNullOrEmpty(portName))
+            {
+                SerialPortCombo.SelectedItem = portName;
+                AppendSerialLog("Porta " + portName + " selecionada.");
+            }
+        }
+
+        private void BtnToggleSerialOpen_Click(object sender, RoutedEventArgs e)
+        {
+            if (_serialService.IsOpen)
+            {
+                _serialService.ClosePort();
+                SerialPortStatusBadge.Background = new SolidColorBrush(Color.FromRgb(0x26, 0x1A, 0x1A));
+                SerialPortStatusBadge.BorderBrush = _brushRed;
+                SerialPortStatusText.Text = "Porta Fechada";
+                SerialPortStatusText.Foreground = _brushRed;
+                TxtToggleSerialBtn.Text = "🔌 Conectar e Escutar";
+                BtnToggleSerialOpen.Background = _brushGreen;
+                BtnToggleSerialOpen.Foreground = new SolidColorBrush(Color.FromRgb(0x0B, 0x0C, 0x10));
+                TxtSerialPinStatus.Text = "Pinos de Hardware: CTS: -- • DSR: -- • CD: --";
+                AppendSerialLog("Porta serial fechada.");
+            }
+            else
+            {
+                string portName = SerialPortCombo.SelectedItem as string;
+                if (string.IsNullOrEmpty(portName))
+                {
+                    MessageBox.Show("Selecione uma porta serial COM na lista para conectar.", "Porta Serial", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                int baudRate = 9600;
+                var baudItem = SerialBaudCombo.SelectedItem as ComboBoxItem;
+                if (baudItem != null && baudItem.Tag != null)
+                {
+                    int.TryParse(baudItem.Tag.ToString(), out baudRate);
+                }
+
+                int dataBits = 8;
+                var dataItem = SerialDataBitsCombo.SelectedItem as ComboBoxItem;
+                if (dataItem != null)
+                {
+                    int.TryParse(dataItem.Content.ToString(), out dataBits);
+                }
+
+                Parity parity = Parity.None;
+                var parityItem = SerialParityCombo.SelectedItem as ComboBoxItem;
+                if (parityItem != null && parityItem.Content.ToString().StartsWith("Even"))
+                    parity = Parity.Even;
+                else if (parityItem != null && parityItem.Content.ToString().StartsWith("Odd"))
+                    parity = Parity.Odd;
+
+                StopBits stopBits = StopBits.One;
+                var stopItem = SerialStopBitsCombo.SelectedItem as ComboBoxItem;
+                if (stopItem != null && stopItem.Content.ToString().StartsWith("2"))
+                    stopBits = StopBits.Two;
+
+                bool dtr = ChkSerialDtr.IsChecked == true;
+                bool rts = ChkSerialRts.IsChecked == true;
+
+                try
+                {
+                    _serialService.OpenPort(portName, baudRate, dataBits, parity, stopBits, Handshake.None, dtr, rts);
+                    SerialPortStatusBadge.Background = new SolidColorBrush(Color.FromRgb(0x14, 0x28, 0x20));
+                    SerialPortStatusBadge.BorderBrush = _brushGreen;
+                    SerialPortStatusText.Text = string.Format("CONECTADO ({0} @ {1} bps)", portName, baudRate);
+                    SerialPortStatusText.Foreground = _brushGreen;
+                    TxtToggleSerialBtn.Text = "⏹️ Desconectar Porta";
+                    BtnToggleSerialOpen.Background = _brushRed;
+                    BtnToggleSerialOpen.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0xFF, 0xFF));
+
+                    TxtSerialPinStatus.Text = "Pinos de Hardware: " + _serialService.GetPinStatus();
+
+                    AppendSerialLog(string.Format("Porta {0} conectada com sucesso a {1} bps (DTR={2}, RTS={3}).", portName, baudRate, dtr, rts));
+                    AppendSerialLog("Aguardando transmissão de peso da balança...");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao abrir a porta: " + ex.Message, "Erro Serial", MessageBoxButton.OK, MessageBoxImage.Error);
+                    AppendSerialLog("Falha: " + ex.Message);
+                }
+            }
+        }
+
+        private void BtnSendToledoEnq_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_serialService.IsOpen)
+            {
+                MessageBox.Show("Conecte-se à porta serial primeiro clicando em 'Conectar e Escutar'.", "Aviso Serial", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                _serialService.SendEnqCommand();
+                AppendSerialLog("Enviado byte ENQ (0x05) solicitando leitura de peso (Balança Toledo / Prix 3, 4, 5).");
+            }
+            catch (Exception ex)
+            {
+                AppendSerialLog("Erro ao enviar comando: " + ex.Message);
+            }
+        }
+
+        private void BtnSendFilizola_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_serialService.IsOpen)
+            {
+                MessageBox.Show("Conecte-se à porta serial primeiro clicando em 'Conectar e Escutar'.", "Aviso Serial", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                _serialService.SendFilizolaCommand();
+                AppendSerialLog("Enviado comando 'P\\r\\n' solicitando leitura de peso (Balança Filizola / Elgin).");
+            }
+            catch (Exception ex)
+            {
+                AppendSerialLog("Erro ao enviar comando: " + ex.Message);
+            }
+        }
+
+        private void BtnSendBalmak_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_serialService.IsOpen)
+            {
+                MessageBox.Show("Conecte-se à porta serial primeiro clicando em 'Conectar e Escutar'.", "Aviso Serial", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                _serialService.SendTextCommand("W\r\n");
+                AppendSerialLog("Enviado comando 'W\\r\\n' solicitando leitura de peso (Balança Balmak / Urano).");
+            }
+            catch (Exception ex)
+            {
+                AppendSerialLog("Erro ao enviar comando: " + ex.Message);
+            }
+        }
+
+        private void BtnClearSerialLog_Click(object sender, RoutedEventArgs e)
+        {
+            TxtSerialReceivedData.Text = "";
+            _serialReceivedBytesTotal = 0;
+            TxtSerialBytesCount.Text = "0 bytes recebidos";
+        }
+
+        private void AppendSerialLog(string msg)
+        {
+            string line = string.Format("[{0:HH:mm:ss}] {1}\n", DateTime.Now, msg);
+            TxtSerialReceivedData.AppendText(line);
+            TxtSerialReceivedData.ScrollToEnd();
+        }
+
+        private void HandleSerialDataReceived(byte[] buffer, string textData, string hexData)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                _serialReceivedBytesTotal += buffer.Length;
+                TxtSerialBytesCount.Text = string.Format("{0} bytes recebidos (Último: {1:HH:mm:ss.fff})", _serialReceivedBytesTotal, DateTime.Now);
+
+                string sanitizedAscii = textData
+                    .Replace("\r", "\\r")
+                    .Replace("\n", "\\n")
+                    .Replace("\u0002", "[STX]")
+                    .Replace("\u0003", "[ETX]")
+                    .Replace("\u0005", "[ENQ]")
+                    .Replace("\u0006", "[ACK]");
+
+                string line = string.Format("[{0:HH:mm:ss.fff}] ASCII: \"{1}\" | HEX: {2}\n", DateTime.Now, sanitizedAscii, hexData);
+                TxtSerialReceivedData.AppendText(line);
+                TxtSerialReceivedData.ScrollToEnd();
+
+                TxtSerialPinStatus.Text = "Pinos de Hardware: " + _serialService.GetPinStatus();
+            }));
         }
     }
 }

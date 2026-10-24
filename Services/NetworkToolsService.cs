@@ -804,5 +804,87 @@ namespace AnalisePro.Services
 
             return summary;
         }
+
+        public static WifiConnectionDetails GetWifiDetails()
+        {
+            var wifi = new WifiConnectionDetails();
+
+            try
+            {
+                // Verificar se há interface wireless ativa
+                var wlanNic = NetworkInterface.GetAllNetworkInterfaces()
+                    .FirstOrDefault(n => n.NetworkInterfaceType == NetworkInterfaceType.Wireless80211);
+
+                if (wlanNic == null)
+                {
+                    wifi.HasWifiAdapter = false;
+                    wifi.Ssid = "Sem Adaptador Wi-Fi instalado";
+                    return wifi;
+                }
+
+                wifi.HasWifiAdapter = true;
+                string output = RunSystemProcess("netsh.exe", "wlan show interfaces");
+
+                if (!string.IsNullOrEmpty(output))
+                {
+                    var lines = output.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var line in lines)
+                    {
+                        string trimmed = line.Trim();
+                        int colIdx = trimmed.IndexOf(':');
+                        if (colIdx <= 0 || colIdx >= trimmed.Length - 1) continue;
+
+                        string key = trimmed.Substring(0, colIdx).Trim().ToLower();
+                        string val = trimmed.Substring(colIdx + 1).Trim();
+
+                        if (key.Equals("ssid"))
+                        {
+                            wifi.Ssid = val;
+                            wifi.IsConnected = !string.IsNullOrEmpty(val);
+                        }
+                        else if (key.Equals("bssid"))
+                        {
+                            wifi.Bssid = val;
+                        }
+                        else if (key.Contains("sinal") || key.Contains("signal"))
+                        {
+                            wifi.SignalStrength = val;
+                            int pct;
+                            if (int.TryParse(val.Replace("%", "").Trim(), out pct))
+                            {
+                                wifi.SignalPercent = pct;
+                            }
+                        }
+                        else if (key.Contains("canal") || key.Contains("channel"))
+                        {
+                            wifi.Channel = val;
+                        }
+                        else if (key.Contains("rádio") || key.Contains("radio"))
+                        {
+                            wifi.RadioType = val;
+                        }
+                        else if (key.Contains("recepção") || key.Contains("receive"))
+                        {
+                            wifi.ReceiveRate = val + " Mbps";
+                        }
+                        else if (key.Contains("transmissão") || key.Contains("transmit"))
+                        {
+                            wifi.TransmitRate = val + " Mbps";
+                        }
+                        else if (key.Contains("autenticação") || key.Contains("authentication"))
+                        {
+                            wifi.Authentication = val;
+                        }
+                        else if (key.Contains("cifra") || key.Contains("cipher"))
+                        {
+                            wifi.Cipher = val;
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            return wifi;
+        }
     }
 }
