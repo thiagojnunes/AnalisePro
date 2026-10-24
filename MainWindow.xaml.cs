@@ -35,12 +35,12 @@ namespace AnalisePro
         private long _serialReceivedBytesTotal = 0;
         private int _pingLoopCounter = 0;
 
-        private readonly SolidColorBrush _brushGreen = new SolidColorBrush(Color.FromRgb(0x00, 0xE6, 0x76));
-        private readonly SolidColorBrush _brushCyan = new SolidColorBrush(Color.FromRgb(0x00, 0xF0, 0xFF));
-        private readonly SolidColorBrush _brushOrange = new SolidColorBrush(Color.FromRgb(0xFF, 0xB7, 0x03));
-        private readonly SolidColorBrush _brushRed = new SolidColorBrush(Color.FromRgb(0xFF, 0x33, 0x66));
-        private readonly SolidColorBrush _brushMuted = new SolidColorBrush(Color.FromRgb(0x64, 0x74, 0x8B));
-        private readonly SolidColorBrush _sliceStroke = new SolidColorBrush(Color.FromRgb(0x10, 0x12, 0x1C));
+        private SolidColorBrush _brushGreen = new SolidColorBrush(Color.FromRgb(0x00, 0xE6, 0x76));
+        private SolidColorBrush _brushCyan = new SolidColorBrush(Color.FromRgb(0x00, 0xF0, 0xFF));
+        private SolidColorBrush _brushOrange = new SolidColorBrush(Color.FromRgb(0xFF, 0xB7, 0x03));
+        private SolidColorBrush _brushRed = new SolidColorBrush(Color.FromRgb(0xFF, 0x33, 0x66));
+        private SolidColorBrush _brushMuted = new SolidColorBrush(Color.FromRgb(0x64, 0x74, 0x8B));
+        private SolidColorBrush _sliceStroke = new SolidColorBrush(Color.FromRgb(0x10, 0x12, 0x1C));
 
         public MainWindow()
         {
@@ -667,32 +667,107 @@ namespace AnalisePro
                 {
                     ThemeIcon.Text = "☀️";
                     ThemeText.Text = "Tema Claro";
-                    ThemeBorder.Background = new SolidColorBrush(Color.FromRgb(0x1A, 0x1D, 0x2B));
 
-                    Application.Current.Resources["BgDark"] = new SolidColorBrush(Color.FromRgb(0x0B, 0x0C, 0x10));
-                    Application.Current.Resources["BgCard"] = new SolidColorBrush(Color.FromRgb(0x13, 0x15, 0x1F));
-                    Application.Current.Resources["BgCardHover"] = new SolidColorBrush(Color.FromRgb(0x1B, 0x1E, 0x2E));
-                    Application.Current.Resources["BorderCard"] = new SolidColorBrush(Color.FromRgb(0x22, 0x26, 0x38));
-                    Application.Current.Resources["TextPrimary"] = new SolidColorBrush(Color.FromRgb(0xFF, 0xFF, 0xFF));
-                    Application.Current.Resources["TextSecondary"] = new SolidColorBrush(Color.FromRgb(0x94, 0xA3, 0xB8));
-                    Application.Current.Resources["TextMuted"] = new SolidColorBrush(Color.FromRgb(0x64, 0x74, 0x8B));
+                    SetThemeResource("BgDark", Color.FromRgb(0x0B, 0x0C, 0x10));
+                    SetThemeResource("BgHeader", Color.FromRgb(0x0E, 0x10, 0x17));
+                    SetThemeResource("BgFooter", Color.FromRgb(0x0C, 0x0D, 0x13));
+                    SetThemeResource("BgCard", Color.FromRgb(0x13, 0x15, 0x1F));
+                    SetThemeResource("BgCardHover", Color.FromRgb(0x1B, 0x1E, 0x2E));
+                    SetThemeResource("BgCardInner", Color.FromRgb(0x16, 0x19, 0x26));
+                    SetThemeResource("BgCardDeep", Color.FromRgb(0x10, 0x12, 0x1C));
+                    SetThemeResource("BgBadge", Color.FromRgb(0x1E, 0x29, 0x3B));
+                    SetThemeResource("BgConsole", Color.FromRgb(0x09, 0x0A, 0x0F));
+                    SetThemeResource("TabInactiveBg", Color.FromRgb(0x14, 0x17, 0x24));
+                    SetThemeResource("BorderCard", Color.FromRgb(0x22, 0x26, 0x38));
+                    SetThemeResource("BorderCardGlow", Color.FromRgb(0x00, 0xF0, 0xFF));
+
+                    SetThemeResource("InputBg", Color.FromRgb(0x10, 0x12, 0x1C));
+                    SetThemeResource("InputFg", Color.FromRgb(0xFF, 0xFF, 0xFF));
+                    SetThemeResource("InputBorder", Color.FromRgb(0x2A, 0x2F, 0x45));
+
+                    SetThemeResource("AccentCyan", Color.FromRgb(0x00, 0xF0, 0xFF));
+                    SetThemeResource("AccentGreen", Color.FromRgb(0x00, 0xE6, 0x76));
+                    SetThemeResource("AccentPurple", Color.FromRgb(0xA8, 0x55, 0xF7));
+                    SetThemeResource("AccentOrange", Color.FromRgb(0xFF, 0xB7, 0x03));
+                    SetThemeResource("AccentRed", Color.FromRgb(0xFF, 0x33, 0x66));
+
+                    SetThemeResource("TextPrimary", Color.FromRgb(0xFF, 0xFF, 0xFF));
+                    SetThemeResource("TextSecondary", Color.FromRgb(0x94, 0xA3, 0xB8));
+                    SetThemeResource("TextMuted", Color.FromRgb(0x64, 0x74, 0x8B));
+
+                    _brushGreen = new SolidColorBrush(Color.FromRgb(0x00, 0xE6, 0x76));
+                    _brushCyan = new SolidColorBrush(Color.FromRgb(0x00, 0xF0, 0xFF));
+                    _brushOrange = new SolidColorBrush(Color.FromRgb(0xFF, 0xB7, 0x03));
+                    _brushRed = new SolidColorBrush(Color.FromRgb(0xFF, 0x33, 0x66));
+                    _brushMuted = new SolidColorBrush(Color.FromRgb(0x64, 0x74, 0x8B));
+                    _sliceStroke = new SolidColorBrush(Color.FromRgb(0x10, 0x12, 0x1C));
+
+                    TxtNetworkLog.Foreground = new SolidColorBrush(Color.FromRgb(0xA5, 0xF3, 0xFC));
+                    TxtSerialReceivedData.Foreground = new SolidColorBrush(Color.FromRgb(0x4A, 0xDE, 0x80));
                 }
                 else
                 {
                     ThemeIcon.Text = "🌙";
                     ThemeText.Text = "Tema Escuro";
-                    ThemeBorder.Background = new SolidColorBrush(Color.FromRgb(0xE2, 0xE8, 0xF0));
 
-                    Application.Current.Resources["BgDark"] = new SolidColorBrush(Color.FromRgb(0xF1, 0xF5, 0xF9));
-                    Application.Current.Resources["BgCard"] = new SolidColorBrush(Color.FromRgb(0xFF, 0xFF, 0xFF));
-                    Application.Current.Resources["BgCardHover"] = new SolidColorBrush(Color.FromRgb(0xF8, 0xFA, 0xFC));
-                    Application.Current.Resources["BorderCard"] = new SolidColorBrush(Color.FromRgb(0xCB, 0xD5, 0xE1));
-                    Application.Current.Resources["TextPrimary"] = new SolidColorBrush(Color.FromRgb(0x0F, 0x17, 0x2A));
-                    Application.Current.Resources["TextSecondary"] = new SolidColorBrush(Color.FromRgb(0x47, 0x55, 0x69));
-                    Application.Current.Resources["TextMuted"] = new SolidColorBrush(Color.FromRgb(0x64, 0x74, 0x8B));
+                    SetThemeResource("BgDark", Color.FromRgb(0xF1, 0xF5, 0xF9));
+                    SetThemeResource("BgHeader", Color.FromRgb(0xFF, 0xFF, 0xFF));
+                    SetThemeResource("BgFooter", Color.FromRgb(0xE2, 0xE8, 0xF0));
+                    SetThemeResource("BgCard", Color.FromRgb(0xFF, 0xFF, 0xFF));
+                    SetThemeResource("BgCardHover", Color.FromRgb(0xF8, 0xFA, 0xFC));
+                    SetThemeResource("BgCardInner", Color.FromRgb(0xF8, 0xFA, 0xFC));
+                    SetThemeResource("BgCardDeep", Color.FromRgb(0xEE, 0xF2, 0xF6));
+                    SetThemeResource("BgBadge", Color.FromRgb(0xE2, 0xE8, 0xF0));
+                    SetThemeResource("BgConsole", Color.FromRgb(0xF8, 0xFA, 0xFC));
+                    SetThemeResource("TabInactiveBg", Color.FromRgb(0xE2, 0xE8, 0xF0));
+                    SetThemeResource("BorderCard", Color.FromRgb(0xCB, 0xD5, 0xE1));
+                    SetThemeResource("BorderCardGlow", Color.FromRgb(0x02, 0x84, 0xC7));
+
+                    SetThemeResource("InputBg", Color.FromRgb(0xFF, 0xFF, 0xFF));
+                    SetThemeResource("InputFg", Color.FromRgb(0x0F, 0x17, 0x2A));
+                    SetThemeResource("InputBorder", Color.FromRgb(0x94, 0xA3, 0xB8));
+
+                    // No Light mode: cores com alto contraste (escuras) para visibilidade imediata
+                    SetThemeResource("AccentCyan", Color.FromRgb(0x02, 0x84, 0xC7));
+                    SetThemeResource("AccentGreen", Color.FromRgb(0x16, 0xA3, 0x4A));
+                    SetThemeResource("AccentPurple", Color.FromRgb(0x7C, 0x3A, 0xED));
+                    SetThemeResource("AccentOrange", Color.FromRgb(0xD9, 0x77, 0x06));
+                    SetThemeResource("AccentRed", Color.FromRgb(0xDC, 0x26, 0x26));
+
+                    SetThemeResource("TextPrimary", Color.FromRgb(0x0F, 0x17, 0x2A));
+                    SetThemeResource("TextSecondary", Color.FromRgb(0x33, 0x41, 0x55));
+                    SetThemeResource("TextMuted", Color.FromRgb(0x47, 0x55, 0x69));
+
+                    _brushGreen = new SolidColorBrush(Color.FromRgb(0x16, 0xA3, 0x4A));
+                    _brushCyan = new SolidColorBrush(Color.FromRgb(0x02, 0x84, 0xC7));
+                    _brushOrange = new SolidColorBrush(Color.FromRgb(0xD9, 0x77, 0x06));
+                    _brushRed = new SolidColorBrush(Color.FromRgb(0xDC, 0x26, 0x26));
+                    _brushMuted = new SolidColorBrush(Color.FromRgb(0x47, 0x55, 0x69));
+                    _sliceStroke = new SolidColorBrush(Color.FromRgb(0xEE, 0xF2, 0xF6));
+
+                    TxtNetworkLog.Foreground = new SolidColorBrush(Color.FromRgb(0x0F, 0x17, 0x2A));
+                    TxtSerialReceivedData.Foreground = new SolidColorBrush(Color.FromRgb(0x15, 0x80, 0x3D));
                 }
+
+                _brushGreen.Freeze();
+                _brushCyan.Freeze();
+                _brushOrange.Freeze();
+                _brushRed.Freeze();
+                _brushMuted.Freeze();
+                _sliceStroke.Freeze();
+
+                Background = (SolidColorBrush)Application.Current.Resources["BgDark"];
+                RefreshNetworkDiagnostics();
             }
             catch { }
+        }
+
+        private void SetThemeResource(string key, Color color)
+        {
+            var brush = new SolidColorBrush(color);
+            brush.Freeze();
+            Application.Current.Resources[key] = brush;
+            this.Resources[key] = brush;
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)

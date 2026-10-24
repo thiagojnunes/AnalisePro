@@ -8,9 +8,9 @@
         WindowStyle="None"
         ResizeMode="CanResizeWithGrip"
         AllowsTransparency="False"
-        Background="{StaticResource BgDark}">
+        Background="{DynamicResource BgDark}">
 
-    <Border BorderBrush="{StaticResource BorderCard}" BorderThickness="1">
+    <Border BorderBrush="{DynamicResource BorderCard}" BorderThickness="1">
         <Grid>
             <Grid.RowDefinitions>
                 <!-- Title Bar -->
@@ -24,7 +24,7 @@
             </Grid.RowDefinitions>
 
             <!-- ================= HEADER / TITLE BAR ================= -->
-            <Border Grid.Row="0" Background="#0E1017" BorderBrush="{StaticResource BorderCard}" BorderThickness="0,0,0,1" MouseDown="TitleBar_MouseDown">
+            <Border Grid.Row="0" Background="{DynamicResource BgHeader}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="0,0,0,1" MouseDown="TitleBar_MouseDown">
                 <Grid Margin="16,0,12,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -34,28 +34,28 @@
 
                     <!-- Logo and App Title -->
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0">
-                        <Border Background="{StaticResource AccentCyan}" CornerRadius="6" Width="28" Height="28" Margin="0,0,10,0">
+                        <Border Background="{DynamicResource AccentCyan}" CornerRadius="6" Width="28" Height="28" Margin="0,0,10,0">
                             <TextBlock Text="⚡" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#0B0C10" />
                         </Border>
-                        <TextBlock Text="ANALISE" FontSize="18" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center" />
-                        <TextBlock Text="PRO" FontSize="18" FontWeight="ExtraBold" Foreground="{StaticResource AccentCyan}" VerticalAlignment="Center" Margin="2,0,8,0" />
-                        <Border Background="#1E2235" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
-                            <TextBlock Text="HARDWARE &amp; DISK ANALYZER" FontSize="9" FontWeight="SemiBold" Foreground="{StaticResource TextSecondary}" />
+                        <TextBlock Text="ANALISE" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Center" />
+                        <TextBlock Text="PRO" FontSize="18" FontWeight="ExtraBold" Foreground="{DynamicResource AccentCyan}" VerticalAlignment="Center" Margin="2,0,8,0" />
+                        <Border Background="{DynamicResource BgBadge}" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                            <TextBlock Text="HARDWARE &amp; DISK ANALYZER" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondary}" />
                         </Border>
                     </StackPanel>
 
                     <!-- Center: Admin Status / Action Button -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Border x:Name="AdminBadgeBorder" Background="#142820" BorderBrush="{StaticResource AccentGreen}" BorderThickness="1" CornerRadius="12" Padding="12,4" Margin="0,0,8,0">
+                        <Border x:Name="AdminBadgeBorder" Background="#142820" BorderBrush="{DynamicResource AccentGreen}" BorderThickness="1" CornerRadius="12" Padding="12,4" Margin="0,0,8,0">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock x:Name="AdminBadgeIcon" Text="🛡️" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center" />
-                                <TextBlock x:Name="AdminBadgeText" Text="Modo Administrador Ativo (Sensores MSR &amp; Hardware)" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource AccentGreen}" VerticalAlignment="Center" />
+                                <TextBlock x:Name="AdminBadgeText" Text="Modo Administrador Ativo (Sensores MSR &amp; Hardware)" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentGreen}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Border>
 
                         <Button x:Name="BtnElevateAdmin" Click="BtnElevateAdmin_Click" Visibility="Collapsed"
-                                Background="#3B2608" BorderBrush="{StaticResource AccentOrange}" BorderThickness="1"
-                                Foreground="{StaticResource AccentOrange}" FontWeight="SemiBold" FontSize="11"
+                                Background="#3B2608" BorderBrush="{DynamicResource AccentOrange}" BorderThickness="1"
+                                Foreground="{DynamicResource AccentOrange}" FontWeight="SemiBold" FontSize="11"
                                 Padding="12,4" Cursor="Hand">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
@@ -75,28 +75,28 @@
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                         <!-- Botão de Alternar Tema (Dark / Light) -->
                         <Button x:Name="BtnToggleTheme" Click="BtnToggleTheme_Click" Background="Transparent" BorderThickness="0" Margin="0,0,8,0" Cursor="Hand" ToolTip="Alternar entre Tema Escuro e Claro">
-                            <Border x:Name="ThemeBorder" Background="#1A1D2B" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="8,4">
+                            <Border x:Name="ThemeBorder" Background="{DynamicResource BgBadge}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="8,4">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock x:Name="ThemeIcon" Text="☀️" FontSize="11" Margin="0,0,4,0" />
-                                    <TextBlock x:Name="ThemeText" Text="Tema Claro" FontSize="11" Foreground="{StaticResource TextSecondary}" />
+                                    <TextBlock x:Name="ThemeText" Text="Tema Claro" FontSize="11" Foreground="{DynamicResource TextSecondary}" />
                                 </StackPanel>
                             </Border>
                         </Button>
 
                         <Button x:Name="BtnPause" Click="BtnPause_Click" Background="Transparent" BorderThickness="0" Margin="0,0,8,0" Cursor="Hand">
-                            <Border x:Name="PauseBorder" Background="#1A1D2B" CornerRadius="6" Padding="8,4">
-                                <TextBlock x:Name="PauseText" Text="⏸️ 1s" FontSize="11" Foreground="{StaticResource TextSecondary}" />
+                            <Border x:Name="PauseBorder" Background="{DynamicResource BgBadge}" CornerRadius="6" Padding="8,4">
+                                <TextBlock x:Name="PauseText" Text="⏸️ 1s" FontSize="11" Foreground="{DynamicResource TextSecondary}" />
                             </Border>
                         </Button>
 
                         <!-- Botão Minimizar -->
                         <Button Click="BtnMinimize_Click" Background="Transparent" BorderThickness="0" Width="32" Height="32" Cursor="Hand" ToolTip="Minimizar">
-                            <TextBlock Text="—" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Text="—" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Button>
 
                         <!-- Botão Maximizar / Restaurar -->
                         <Button x:Name="BtnMaximize" Click="BtnMaximize_Click" Background="Transparent" BorderThickness="0" Width="32" Height="32" Cursor="Hand" ToolTip="Maximizar / Restaurar">
-                            <TextBlock x:Name="TxtMaximizeIcon" Text="🗖" FontSize="13" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock x:Name="TxtMaximizeIcon" Text="🗖" FontSize="13" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Button>
 
                         <!-- Botão Fechar -->
@@ -118,7 +118,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- KPI 1: CPU Temperature -->
-                <Border Grid.Column="0" Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Margin="0,0,8,0" Padding="12,10">
+                <Border Grid.Column="0" Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Margin="0,0,8,0" Padding="12,10">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -127,15 +127,15 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="🌡️" FontSize="13" Margin="0,0,4,0" />
-                            <TextBlock Text="CPU TEMP" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" />
+                            <TextBlock Text="CPU TEMP" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" />
                         </StackPanel>
-                        <TextBlock x:Name="KpiCpuTemp" Grid.Row="1" Text="-- °C" FontSize="26" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" VerticalAlignment="Center" />
-                        <TextBlock x:Name="KpiCpuTempSub" Grid.Row="2" Text="Lendo sensor..." FontSize="10" Foreground="{StaticResource TextMuted}" />
+                        <TextBlock x:Name="KpiCpuTemp" Grid.Row="1" Text="-- °C" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}" VerticalAlignment="Center" />
+                        <TextBlock x:Name="KpiCpuTempSub" Grid.Row="2" Text="Lendo sensor..." FontSize="10" Foreground="{DynamicResource TextMuted}" />
                     </Grid>
                 </Border>
 
                 <!-- KPI 2: CPU Load -->
-                <Border Grid.Column="1" Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Margin="0,0,8,0" Padding="12,10">
+                <Border Grid.Column="1" Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Margin="0,0,8,0" Padding="12,10">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -144,15 +144,15 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="⚡" FontSize="13" Margin="0,0,4,0" />
-                            <TextBlock Text="CPU USO" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" />
+                            <TextBlock Text="CPU USO" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" />
                         </StackPanel>
-                        <TextBlock x:Name="KpiCpuLoad" Grid.Row="1" Text="0.0 %" FontSize="26" FontWeight="Bold" Foreground="{StaticResource AccentCyan}" VerticalAlignment="Center" />
+                        <TextBlock x:Name="KpiCpuLoad" Grid.Row="1" Text="0.0 %" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource AccentCyan}" VerticalAlignment="Center" />
                         <ProgressBar x:Name="KpiCpuProgress" Grid.Row="2" Style="{StaticResource ModernProgress}" Value="0" Maximum="100" />
                     </Grid>
                 </Border>
 
                 <!-- KPI 3: Memory RAM -->
-                <Border Grid.Column="2" Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Margin="0,0,8,0" Padding="12,10">
+                <Border Grid.Column="2" Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Margin="0,0,8,0" Padding="12,10">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -161,15 +161,15 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="🧠" FontSize="13" Margin="0,0,4,0" />
-                            <TextBlock Text="MEMÓRIA RAM" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" />
+                            <TextBlock Text="MEMÓRIA RAM" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" />
                         </StackPanel>
-                        <TextBlock x:Name="KpiRamLoad" Grid.Row="1" Text="0 %" FontSize="26" FontWeight="Bold" Foreground="{StaticResource AccentPurple}" VerticalAlignment="Center" />
-                        <TextBlock x:Name="KpiRamDetails" Grid.Row="2" Text="0.0 / 0.0 GB" FontSize="10" Foreground="{StaticResource TextMuted}" />
+                        <TextBlock x:Name="KpiRamLoad" Grid.Row="1" Text="0 %" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource AccentPurple}" VerticalAlignment="Center" />
+                        <TextBlock x:Name="KpiRamDetails" Grid.Row="2" Text="0.0 / 0.0 GB" FontSize="10" Foreground="{DynamicResource TextMuted}" />
                     </Grid>
                 </Border>
 
                 <!-- KPI 4: GPU -->
-                <Border Grid.Column="3" Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Margin="0,0,8,0" Padding="12,10">
+                <Border Grid.Column="3" Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Margin="0,0,8,0" Padding="12,10">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -178,15 +178,15 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="🎮" FontSize="13" Margin="0,0,4,0" />
-                            <TextBlock Text="GPU TEMP" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" />
+                            <TextBlock Text="GPU TEMP" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" />
                         </StackPanel>
-                        <TextBlock x:Name="KpiGpuTemp" Grid.Row="1" Text="-- °C" FontSize="26" FontWeight="Bold" Foreground="{StaticResource AccentCyan}" VerticalAlignment="Center" />
-                        <TextBlock x:Name="KpiGpuLoad" Grid.Row="2" Text="Uso: 0%" FontSize="10" Foreground="{StaticResource TextMuted}" />
+                        <TextBlock x:Name="KpiGpuTemp" Grid.Row="1" Text="-- °C" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource AccentCyan}" VerticalAlignment="Center" />
+                        <TextBlock x:Name="KpiGpuLoad" Grid.Row="2" Text="Uso: 0%" FontSize="10" Foreground="{DynamicResource TextMuted}" />
                     </Grid>
                 </Border>
 
                 <!-- KPI 5: Storage -->
-                <Border Grid.Column="4" Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="12,10">
+                <Border Grid.Column="4" Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="12,10">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -195,10 +195,10 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="💾" FontSize="13" Margin="0,0,4,0" />
-                            <TextBlock Text="DISCO PRINCIPAL" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" />
+                            <TextBlock Text="DISCO PRINCIPAL" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" />
                         </StackPanel>
-                        <TextBlock x:Name="KpiDiskTemp" Grid.Row="1" Text="-- °C" FontSize="26" FontWeight="Bold" Foreground="{StaticResource AccentOrange}" VerticalAlignment="Center" />
-                        <TextBlock x:Name="KpiDiskFree" Grid.Row="2" Text="Espaço Livre: --" FontSize="10" Foreground="{StaticResource TextMuted}" />
+                        <TextBlock x:Name="KpiDiskTemp" Grid.Row="1" Text="-- °C" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource AccentOrange}" VerticalAlignment="Center" />
+                        <TextBlock x:Name="KpiDiskFree" Grid.Row="2" Text="Espaço Livre: --" FontSize="10" Foreground="{DynamicResource TextMuted}" />
                     </Grid>
                 </Border>
             </Grid>
@@ -214,7 +214,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type TabItem}">
-                                    <Border Name="Border" Background="#141724" BorderBrush="{StaticResource BorderCard}" BorderThickness="1,1,1,0" CornerRadius="6,6,0,0" Margin="0,0,4,0" Padding="14,8">
+                                    <Border Name="Border" Background="{DynamicResource TabInactiveBg}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1,1,1,0" CornerRadius="6,6,0,0" Margin="0,0,4,0" Padding="14,8">
                                         <ContentPresenter x:Name="ContentSite"
                                                           VerticalAlignment="Center"
                                                           HorizontalAlignment="Center"
@@ -226,10 +226,10 @@
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="Border" Property="Background" Value="{StaticResource BgCard}" />
-                                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource AccentCyan}" />
+                                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource BgCard}" />
+                                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource AccentCyan}" />
                                             <Setter TargetName="Border" Property="BorderThickness" Value="1,2,1,0" />
-                                            <Setter Property="Foreground" Value="{StaticResource AccentCyan}" />
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentCyan}" />
                                         </Trigger>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter TargetName="Border" Property="Background" Value="#1D2235" />
@@ -244,7 +244,7 @@
 
                 <!-- TAB 1: VISÃO GERAL (HWMonitor) -->
                 <TabItem Header="📊 Visão Geral">
-                    <Border Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
+                    <Border Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -254,19 +254,19 @@
 
                                 <!-- Column 1: CPU & RAM Summary -->
                                 <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                                    <Border Background="#161926" CornerRadius="8" Padding="14" Margin="0,0,0,10">
+                                    <Border Background="{DynamicResource BgCardInner}" CornerRadius="8" Padding="14" Margin="0,0,0,10">
                                         <StackPanel>
-                                            <TextBlock Text="⚡ PROCESSADOR EM TEMPO REAL" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentCyan}" Margin="0,0,0,6" />
-                                            <TextBlock x:Name="OverviewCpuName" Text="Carregando..." FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}" TextWrapping="Wrap" />
-                                            <TextBlock x:Name="OverviewCpuDetails" Text="-- núcleos / -- threads" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,10" />
+                                            <TextBlock Text="⚡ PROCESSADOR EM TEMPO REAL" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentCyan}" Margin="0,0,0,6" />
+                                            <TextBlock x:Name="OverviewCpuName" Text="Carregando..." FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimary}" TextWrapping="Wrap" />
+                                            <TextBlock x:Name="OverviewCpuDetails" Text="-- núcleos / -- threads" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,2,0,10" />
 
                                             <Grid Margin="0,0,0,6">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Uso Total do Processador" FontSize="11" Foreground="{StaticResource TextSecondary}" />
-                                                <TextBlock x:Name="OverviewCpuLoadVal" Grid.Column="1" Text="0.0 %" FontSize="12" FontWeight="Bold" Foreground="{StaticResource AccentCyan}" />
+                                                <TextBlock Text="Uso Total do Processador" FontSize="11" Foreground="{DynamicResource TextSecondary}" />
+                                                <TextBlock x:Name="OverviewCpuLoadVal" Grid.Column="1" Text="0.0 %" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource AccentCyan}" />
                                             </Grid>
                                             <ProgressBar x:Name="OverviewCpuLoadBar" Style="{StaticResource ModernProgress}" Value="0" Maximum="100" Margin="0,0,0,12" />
 
@@ -277,34 +277,34 @@
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
                                                 <StackPanel Grid.Column="0">
-                                                    <TextBlock Text="Temperatura" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="OverviewCpuTempVal" Text="-- °C" FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" />
+                                                    <TextBlock Text="Temperatura" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="OverviewCpuTempVal" Text="-- °C" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}" />
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="1">
-                                                    <TextBlock Text="Potência" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="OverviewCpuPowerVal" Text="-- W" FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentOrange}" />
+                                                    <TextBlock Text="Potência" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="OverviewCpuPowerVal" Text="-- W" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource AccentOrange}" />
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="2">
-                                                    <TextBlock Text="Frequência Base" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="OverviewCpuClockVal" Text="-- MHz" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" />
+                                                    <TextBlock Text="Frequência Base" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="OverviewCpuClockVal" Text="-- MHz" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" />
                                                 </StackPanel>
                                             </Grid>
                                         </StackPanel>
                                     </Border>
 
                                     <!-- RAM Card -->
-                                    <Border Background="#161926" CornerRadius="8" Padding="14">
+                                    <Border Background="{DynamicResource BgCardInner}" CornerRadius="8" Padding="14">
                                         <StackPanel>
-                                            <TextBlock Text="🧠 MEMÓRIA RAM &amp; PAGINAÇÃO" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentPurple}" Margin="0,0,0,6" />
+                                            <TextBlock Text="🧠 MEMÓRIA RAM &amp; PAGINAÇÃO" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentPurple}" Margin="0,0,0,6" />
                                             <Grid Margin="0,0,0,4">
-                                                <TextBlock Text="Memória Física Usada" FontSize="11" Foreground="{StaticResource TextSecondary}" />
-                                                <TextBlock x:Name="OverviewRamVal" HorizontalAlignment="Right" Text="0.0 / 0.0 GB (0%)" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentPurple}" />
+                                                <TextBlock Text="Memória Física Usada" FontSize="11" Foreground="{DynamicResource TextSecondary}" />
+                                                <TextBlock x:Name="OverviewRamVal" HorizontalAlignment="Right" Text="0.0 / 0.0 GB (0%)" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource AccentPurple}" />
                                             </Grid>
-                                            <ProgressBar x:Name="OverviewRamBar" Style="{StaticResource ModernProgress}" Foreground="{StaticResource AccentPurple}" Value="0" Maximum="100" Margin="0,0,0,10" />
+                                            <ProgressBar x:Name="OverviewRamBar" Style="{StaticResource ModernProgress}" Foreground="{DynamicResource AccentPurple}" Value="0" Maximum="100" Margin="0,0,0,10" />
 
                                             <Grid Margin="0,0,0,4">
-                                                <TextBlock Text="Arquivo de Paginação (Swap)" FontSize="11" Foreground="{StaticResource TextSecondary}" />
-                                                <TextBlock x:Name="OverviewVirtualRamVal" HorizontalAlignment="Right" Text="0.0 / 0.0 GB (0%)" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" />
+                                                <TextBlock Text="Arquivo de Paginação (Swap)" FontSize="11" Foreground="{DynamicResource TextSecondary}" />
+                                                <TextBlock x:Name="OverviewVirtualRamVal" HorizontalAlignment="Right" Text="0.0 / 0.0 GB (0%)" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" />
                                             </Grid>
                                             <ProgressBar x:Name="OverviewVirtualRamBar" Style="{StaticResource ModernProgress}" Foreground="#64748B" Value="0" Maximum="100" />
                                         </StackPanel>
@@ -313,10 +313,10 @@
 
                                 <!-- Column 2: GPU & Storage & Network -->
                                 <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                                    <Border Background="#161926" CornerRadius="8" Padding="14" Margin="0,0,0,10">
+                                    <Border Background="{DynamicResource BgCardInner}" CornerRadius="8" Padding="14" Margin="0,0,0,10">
                                         <StackPanel>
-                                            <TextBlock Text="🎮 PLACA DE VÍDEO (GPU)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentCyan}" Margin="0,0,0,6" />
-                                            <TextBlock x:Name="OverviewGpuName" Text="Carregando..." FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}" />
+                                            <TextBlock Text="🎮 PLACA DE VÍDEO (GPU)" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentCyan}" Margin="0,0,0,6" />
+                                            <TextBlock x:Name="OverviewGpuName" Text="Carregando..." FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimary}" />
                                             <Grid Margin="0,8,0,0">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
@@ -324,27 +324,27 @@
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
                                                 <StackPanel Grid.Column="0">
-                                                    <TextBlock Text="Uso da GPU" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="OverviewGpuLoadVal" Text="-- %" FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentCyan}" />
+                                                    <TextBlock Text="Uso da GPU" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="OverviewGpuLoadVal" Text="-- %" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource AccentCyan}" />
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="1">
-                                                    <TextBlock Text="Temperatura" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="OverviewGpuTempVal" Text="-- °C" FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" />
+                                                    <TextBlock Text="Temperatura" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="OverviewGpuTempVal" Text="-- °C" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}" />
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="2">
-                                                    <TextBlock Text="VRAM Usada" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="OverviewGpuVramVal" Text="-- MB" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" />
+                                                    <TextBlock Text="VRAM Usada" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="OverviewGpuVramVal" Text="-- MB" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" />
                                                 </StackPanel>
                                             </Grid>
                                         </StackPanel>
                                     </Border>
 
                                     <!-- Storage & Network Quick View -->
-                                    <Border Background="#161926" CornerRadius="8" Padding="14">
+                                    <Border Background="{DynamicResource BgCardInner}" CornerRadius="8" Padding="14">
                                         <StackPanel>
-                                            <TextBlock Text="💾 DISCOS &amp; REDE" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentOrange}" Margin="0,0,0,8" />
-                                            <TextBlock x:Name="OverviewDiskSummary" Text="Discos: Carregando..." FontSize="11" Foreground="{StaticResource TextPrimary}" Margin="0,0,0,6" />
-                                            <ProgressBar x:Name="OverviewDiskBar" Style="{StaticResource ModernProgress}" Foreground="{StaticResource AccentOrange}" Value="0" Maximum="100" Margin="0,0,0,12" />
+                                            <TextBlock Text="💾 DISCOS &amp; REDE" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentOrange}" Margin="0,0,0,8" />
+                                            <TextBlock x:Name="OverviewDiskSummary" Text="Discos: Carregando..." FontSize="11" Foreground="{DynamicResource TextPrimary}" Margin="0,0,0,6" />
+                                            <ProgressBar x:Name="OverviewDiskBar" Style="{StaticResource ModernProgress}" Foreground="{DynamicResource AccentOrange}" Value="0" Maximum="100" Margin="0,0,0,12" />
 
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -352,12 +352,12 @@
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
                                                 <StackPanel Grid.Column="0">
-                                                    <TextBlock Text="Download (Rede)" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="OverviewNetDownVal" Text="0.0 KB/s" FontSize="13" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" />
+                                                    <TextBlock Text="Download (Rede)" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="OverviewNetDownVal" Text="0.0 KB/s" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}" />
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="1">
-                                                    <TextBlock Text="Upload (Rede)" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="OverviewNetUpVal" Text="0.0 KB/s" FontSize="13" FontWeight="Bold" Foreground="{StaticResource AccentCyan}" />
+                                                    <TextBlock Text="Upload (Rede)" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="OverviewNetUpVal" Text="0.0 KB/s" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource AccentCyan}" />
                                                 </StackPanel>
                                             </Grid>
                                         </StackPanel>
@@ -370,7 +370,7 @@
 
                 <!-- TAB 2: HARDWARE (Processador & Placa-Mãe) -->
                 <TabItem Header="⚡ Hardware">
-                    <Border Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
+                    <Border Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -380,52 +380,52 @@
 
                                 <!-- Left: Processor Hardware Specs -->
                                 <StackPanel Grid.Column="0" Margin="0,0,12,0">
-                                    <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                    <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                                <TextBlock Text="⚡ ESPECIFICAÇÕES DO PROCESSADOR" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentCyan}" />
+                                                <TextBlock Text="⚡ ESPECIFICAÇÕES DO PROCESSADOR" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentCyan}" />
                                             </StackPanel>
 
                                             <!-- CPU Name & Manufacturer -->
                                             <Grid Margin="0,0,0,8">
-                                                <TextBlock Text="Processador:" FontSize="11" Foreground="{StaticResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
-                                                <TextBlock x:Name="CpuzName" Text="Carregando..." Margin="120,0,0,0" FontWeight="Bold" FontSize="12" Foreground="{StaticResource TextPrimary}" TextWrapping="Wrap" />
+                                                <TextBlock Text="Processador:" FontSize="11" Foreground="{DynamicResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
+                                                <TextBlock x:Name="CpuzName" Text="Carregando..." Margin="120,0,0,0" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource TextPrimary}" TextWrapping="Wrap" />
                                             </Grid>
                                             <Grid Margin="0,0,0,8">
-                                                <TextBlock Text="Fabricante:" FontSize="11" Foreground="{StaticResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
-                                                <TextBlock x:Name="CpuzManufacturer" Text="--" Margin="120,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource TextPrimary}" />
+                                                <TextBlock Text="Fabricante:" FontSize="11" Foreground="{DynamicResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
+                                                <TextBlock x:Name="CpuzManufacturer" Text="--" Margin="120,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource TextPrimary}" />
                                             </Grid>
                                             <Grid Margin="0,0,0,8">
-                                                <TextBlock Text="Codinome / Família:" FontSize="11" Foreground="{StaticResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
-                                                <TextBlock x:Name="CpuzCodename" Text="--" Margin="120,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource AccentGreen}" />
+                                                <TextBlock Text="Codinome / Família:" FontSize="11" Foreground="{DynamicResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
+                                                <TextBlock x:Name="CpuzCodename" Text="--" Margin="120,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource AccentGreen}" />
                                             </Grid>
                                             <Grid Margin="0,0,0,8">
-                                                <TextBlock Text="Soquete (Socket):" FontSize="11" Foreground="{StaticResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
-                                                <TextBlock x:Name="CpuzSocket" Text="--" Margin="120,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource TextPrimary}" />
+                                                <TextBlock Text="Soquete (Socket):" FontSize="11" Foreground="{DynamicResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
+                                                <TextBlock x:Name="CpuzSocket" Text="--" Margin="120,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource TextPrimary}" />
                                             </Grid>
                                             <Grid Margin="0,0,0,8">
-                                                <TextBlock Text="Núcleos &amp; Threads:" FontSize="11" Foreground="{StaticResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
-                                                <TextBlock x:Name="CpuzCoresThreads" Text="-- Núcleos Físicos / -- Threads Lógicas" Margin="120,0,0,0" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentCyan}" />
+                                                <TextBlock Text="Núcleos &amp; Threads:" FontSize="11" Foreground="{DynamicResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
+                                                <TextBlock x:Name="CpuzCoresThreads" Text="-- Núcleos Físicos / -- Threads Lógicas" Margin="120,0,0,0" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource AccentCyan}" />
                                             </Grid>
                                             <Grid Margin="0,0,0,8">
-                                                <TextBlock Text="Frequência Base:" FontSize="11" Foreground="{StaticResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
-                                                <TextBlock x:Name="CpuzBaseClock" Text="-- MHz" Margin="120,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource TextPrimary}" />
+                                                <TextBlock Text="Frequência Base:" FontSize="11" Foreground="{DynamicResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
+                                                <TextBlock x:Name="CpuzBaseClock" Text="-- MHz" Margin="120,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource TextPrimary}" />
                                             </Grid>
                                             <Grid Margin="0,0,0,8">
-                                                <TextBlock Text="Cache L2 / L3:" FontSize="11" Foreground="{StaticResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
-                                                <TextBlock x:Name="CpuzCache" Text="L2: -- | L3: --" Margin="120,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource AccentOrange}" />
+                                                <TextBlock Text="Cache L2 / L3:" FontSize="11" Foreground="{DynamicResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
+                                                <TextBlock x:Name="CpuzCache" Text="L2: -- | L3: --" Margin="120,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource AccentOrange}" />
                                             </Grid>
                                             <Grid Margin="0,0,0,4">
-                                                <TextBlock Text="Instruções:" FontSize="11" Foreground="{StaticResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
-                                                <TextBlock x:Name="CpuzInstructions" Text="MMX, SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2, AVX, AVX2, AES" Margin="120,0,0,0" FontSize="10" Foreground="{StaticResource TextMuted}" TextWrapping="Wrap" />
+                                                <TextBlock Text="Instruções:" FontSize="11" Foreground="{DynamicResource TextSecondary}" Width="120" HorizontalAlignment="Left" />
+                                                <TextBlock x:Name="CpuzInstructions" Text="MMX, SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2, AVX, AVX2, AES" Margin="120,0,0,0" FontSize="10" Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" />
                                             </Grid>
                                         </StackPanel>
                                     </Border>
 
                                     <!-- Core Realtime Bars -->
-                                    <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14">
+                                    <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14">
                                         <StackPanel>
-                                            <TextBlock Text="CARGA INDIVIDUAL POR NÚCLEO (CORES)" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentCyan}" Margin="0,0,0,8" />
+                                            <TextBlock Text="CARGA INDIVIDUAL POR NÚCLEO (CORES)" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource AccentCyan}" Margin="0,0,0,8" />
                                             <ItemsControl x:Name="CpuzCoresList">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
@@ -434,15 +434,15 @@
                                                 </ItemsControl.ItemsPanel>
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <Border Background="#10121C" BorderBrush="#202436" BorderThickness="1" CornerRadius="4" Padding="8,6" Margin="3">
+                                                        <Border Background="{DynamicResource BgCardDeep}" BorderBrush="#202436" BorderThickness="1" CornerRadius="4" Padding="8,6" Margin="3">
                                                             <Grid>
                                                                 <Grid.RowDefinitions>
                                                                     <RowDefinition Height="Auto" />
                                                                     <RowDefinition Height="Auto" />
                                                                 </Grid.RowDefinitions>
                                                                 <Grid Grid.Row="0">
-                                                                    <TextBlock Text="{Binding Name}" FontSize="10" Foreground="{StaticResource TextPrimary}" />
-                                                                    <TextBlock Text="{Binding Load, StringFormat='{}{0:F1}%'}" HorizontalAlignment="Right" FontSize="10" FontWeight="Bold" Foreground="{StaticResource AccentCyan}" />
+                                                                    <TextBlock Text="{Binding Name}" FontSize="10" Foreground="{DynamicResource TextPrimary}" />
+                                                                    <TextBlock Text="{Binding Load, StringFormat='{}{0:F1}%'}" HorizontalAlignment="Right" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource AccentCyan}" />
                                                                 </Grid>
                                                                 <ProgressBar Grid.Row="1" Style="{StaticResource ModernProgress}" Value="{Binding Load}" Maximum="100" Height="4" Margin="0,4,0,0" />
                                                             </Grid>
@@ -456,34 +456,34 @@
 
                                 <!-- Right: Motherboard & BIOS Specs -->
                                 <StackPanel Grid.Column="1" Margin="0,0,0,0">
-                                    <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14">
+                                    <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14">
                                         <StackPanel>
-                                            <TextBlock Text="🏛️ PLACA-MÃE (MOTHERBOARD)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentOrange}" Margin="0,0,0,12" />
+                                            <TextBlock Text="🏛️ PLACA-MÃE (MOTHERBOARD)" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentOrange}" Margin="0,0,0,12" />
 
-                                            <TextBlock Text="Fabricante da Placa-Mãe:" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                            <TextBlock x:Name="BoardVendor" Text="--" FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" Margin="0,0,0,8" />
+                                            <TextBlock Text="Fabricante da Placa-Mãe:" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                            <TextBlock x:Name="BoardVendor" Text="--" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" Margin="0,0,0,8" />
 
-                                            <TextBlock Text="Modelo / Produto:" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                            <TextBlock x:Name="BoardModel" Text="--" FontSize="13" FontWeight="Bold" Foreground="{StaticResource AccentOrange}" Margin="0,0,0,8" />
+                                            <TextBlock Text="Modelo / Produto:" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                            <TextBlock x:Name="BoardModel" Text="--" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource AccentOrange}" Margin="0,0,0,8" />
 
-                                            <TextBlock Text="Versão da Placa:" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                            <TextBlock x:Name="BoardVersion" Text="--" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,8" />
+                                            <TextBlock Text="Versão da Placa:" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                            <TextBlock x:Name="BoardVersion" Text="--" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,8" />
 
-                                            <TextBlock Text="Número de Série:" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                            <TextBlock x:Name="BoardSerial" Text="--" FontSize="11" Foreground="{StaticResource TextMuted}" Margin="0,0,0,12" />
+                                            <TextBlock Text="Número de Série:" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                            <TextBlock x:Name="BoardSerial" Text="--" FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,12" />
 
                                             <Separator Background="#222638" Margin="0,0,0,12" />
 
-                                            <TextBlock Text="💾 BIOS / UEFI" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentCyan}" Margin="0,0,0,8" />
+                                            <TextBlock Text="💾 BIOS / UEFI" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource AccentCyan}" Margin="0,0,0,8" />
 
-                                            <TextBlock Text="Fornecedor da BIOS:" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                            <TextBlock x:Name="BiosVendor" Text="--" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}" Margin="0,0,0,6" />
+                                            <TextBlock Text="Fornecedor da BIOS:" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                            <TextBlock x:Name="BiosVendor" Text="--" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimary}" Margin="0,0,0,6" />
 
-                                            <TextBlock Text="Versão da BIOS:" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                            <TextBlock x:Name="BiosVersion" Text="--" FontSize="12" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" Margin="0,0,0,6" />
+                                            <TextBlock Text="Versão da BIOS:" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                            <TextBlock x:Name="BiosVersion" Text="--" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}" Margin="0,0,0,6" />
 
-                                            <TextBlock Text="Data de Lançamento:" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                            <TextBlock x:Name="BiosDate" Text="--" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextSecondary}" />
+                                            <TextBlock Text="Data de Lançamento:" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                            <TextBlock x:Name="BiosDate" Text="--" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondary}" />
                                         </StackPanel>
                                     </Border>
                                 </StackPanel>
@@ -494,15 +494,15 @@
 
                 <!-- TAB 3: MEMÓRIA RAM (SPD & Módulos) -->
                 <TabItem Header="🧠 Memória (SPD)">
-                    <Border Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
+                    <Border Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
-                                <TextBlock Text="MÓDULOS DE MEMÓRIA INSTALADOS (DETALHES SPD)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentPurple}" Margin="0,0,0,10" />
+                                <TextBlock Text="MÓDULOS DE MEMÓRIA INSTALADOS (DETALHES SPD)" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentPurple}" Margin="0,0,0,10" />
 
                                 <ItemsControl x:Name="RamModulesItemsControl">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,10">
+                                            <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,10">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*" />
@@ -511,23 +511,23 @@
                                                     </Grid.ColumnDefinitions>
 
                                                     <StackPanel Grid.Column="0">
-                                                        <TextBlock Text="{Binding Slot}" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentPurple}" />
-                                                        <TextBlock Text="{Binding MemoryType, StringFormat='Tecnologia: {0}'}" FontSize="11" Foreground="{StaticResource AccentGreen}" Margin="0,2,0,0" />
-                                                        <TextBlock Text="{Binding CapacityGb, StringFormat='Capacidade: {0:F0} GB'}" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}" Margin="0,2,0,0" />
+                                                        <TextBlock Text="{Binding Slot}" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentPurple}" />
+                                                        <TextBlock Text="{Binding MemoryType, StringFormat='Tecnologia: {0}'}" FontSize="11" Foreground="{DynamicResource AccentGreen}" Margin="0,2,0,0" />
+                                                        <TextBlock Text="{Binding CapacityGb, StringFormat='Capacidade: {0:F0} GB'}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimary}" Margin="0,2,0,0" />
                                                     </StackPanel>
 
                                                     <StackPanel Grid.Column="1">
-                                                        <TextBlock Text="Fabricante do Módulo:" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                                        <TextBlock Text="{Binding Manufacturer}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource TextPrimary}" />
-                                                        <TextBlock Text="Número de Peça (Part Number):" FontSize="10" Foreground="{StaticResource TextMuted}" Margin="0,4,0,0" />
-                                                        <TextBlock Text="{Binding PartNumber}" FontSize="11" Foreground="{StaticResource TextSecondary}" />
+                                                        <TextBlock Text="Fabricante do Módulo:" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                                        <TextBlock Text="{Binding Manufacturer}" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource TextPrimary}" />
+                                                        <TextBlock Text="Número de Peça (Part Number):" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,4,0,0" />
+                                                        <TextBlock Text="{Binding PartNumber}" FontSize="11" Foreground="{DynamicResource TextSecondary}" />
                                                     </StackPanel>
 
                                                     <StackPanel Grid.Column="2">
-                                                        <TextBlock Text="Velocidade Nominal:" FontSize="10" Foreground="{StaticResource TextMuted}" />
-                                                        <TextBlock Text="{Binding SpeedMt, StringFormat='{}{0} MT/s'}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentCyan}" />
-                                                        <TextBlock Text="Clock Configurado:" FontSize="10" Foreground="{StaticResource TextMuted}" Margin="0,4,0,0" />
-                                                        <TextBlock Text="{Binding ConfiguredSpeedMt, StringFormat='{}{0} MT/s'}" FontSize="11" Foreground="{StaticResource TextSecondary}" />
+                                                        <TextBlock Text="Velocidade Nominal:" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+                                                        <TextBlock Text="{Binding SpeedMt, StringFormat='{}{0} MT/s'}" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource AccentCyan}" />
+                                                        <TextBlock Text="Clock Configurado:" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,4,0,0" />
+                                                        <TextBlock Text="{Binding ConfiguredSpeedMt, StringFormat='{}{0} MT/s'}" FontSize="11" Foreground="{DynamicResource TextSecondary}" />
                                                     </StackPanel>
                                                 </Grid>
                                             </Border>
@@ -541,62 +541,62 @@
 
                 <!-- TAB 4: GPU-Z (Placa de Vídeo) -->
                 <TabItem Header="🎮 Placa de Vídeo">
-                    <Border Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
+                    <Border Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
-                                <TextBlock Text="ESPECIFICAÇÕES GRÁFICAS &amp; MONITORAMENTO AO VIVO" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentCyan}" Margin="0,0,0,12" />
+                                <TextBlock Text="ESPECIFICAÇÕES GRÁFICAS &amp; MONITORAMENTO AO VIVO" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentCyan}" Margin="0,0,0,12" />
 
                                 <UniformGrid Columns="3" Margin="0,0,0,12">
-                                    <Border Background="#161926" CornerRadius="6" Padding="12" Margin="4">
+                                    <Border Background="{DynamicResource BgCardInner}" CornerRadius="6" Padding="12" Margin="4">
                                         <StackPanel>
-                                            <TextBlock Text="Temperatura da GPU" FontSize="10" Foreground="{StaticResource TextSecondary}" />
-                                            <TextBlock x:Name="GpuTabTemp" Text="-- °C" FontSize="22" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" Margin="0,4,0,0" />
+                                            <TextBlock Text="Temperatura da GPU" FontSize="10" Foreground="{DynamicResource TextSecondary}" />
+                                            <TextBlock x:Name="GpuTabTemp" Text="-- °C" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}" Margin="0,4,0,0" />
                                         </StackPanel>
                                     </Border>
-                                    <Border Background="#161926" CornerRadius="6" Padding="12" Margin="4">
+                                    <Border Background="{DynamicResource BgCardInner}" CornerRadius="6" Padding="12" Margin="4">
                                         <StackPanel>
-                                            <TextBlock Text="Carga do Core GPU" FontSize="10" Foreground="{StaticResource TextSecondary}" />
-                                            <TextBlock x:Name="GpuTabLoad" Text="-- %" FontSize="22" FontWeight="Bold" Foreground="{StaticResource AccentCyan}" Margin="0,4,0,0" />
+                                            <TextBlock Text="Carga do Core GPU" FontSize="10" Foreground="{DynamicResource TextSecondary}" />
+                                            <TextBlock x:Name="GpuTabLoad" Text="-- %" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource AccentCyan}" Margin="0,4,0,0" />
                                         </StackPanel>
                                     </Border>
-                                    <Border Background="#161926" CornerRadius="6" Padding="12" Margin="4">
+                                    <Border Background="{DynamicResource BgCardInner}" CornerRadius="6" Padding="12" Margin="4">
                                         <StackPanel>
-                                            <TextBlock Text="Clock do Core" FontSize="10" Foreground="{StaticResource TextSecondary}" />
-                                            <TextBlock x:Name="GpuTabClock" Text="-- MHz" FontSize="22" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" Margin="0,4,0,0" />
+                                            <TextBlock Text="Clock do Core" FontSize="10" Foreground="{DynamicResource TextSecondary}" />
+                                            <TextBlock x:Name="GpuTabClock" Text="-- MHz" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" Margin="0,4,0,0" />
                                         </StackPanel>
                                     </Border>
                                 </UniformGrid>
 
-                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14">
+                                <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14">
                                     <StackPanel>
-                                        <TextBlock Text="INFORMAÇÕES DE DRIVER E DISPLAY" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentOrange}" Margin="0,0,0,8" />
+                                        <TextBlock Text="INFORMAÇÕES DE DRIVER E DISPLAY" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource AccentOrange}" Margin="0,0,0,8" />
                                         <Grid Margin="0,0,0,6">
-                                            <TextBlock Text="Modelo da GPU:" Width="140" HorizontalAlignment="Left" FontSize="11" Foreground="{StaticResource TextSecondary}" />
-                                            <TextBlock x:Name="GpuFullModel" Text="--" Margin="140,0,0,0" FontWeight="Bold" FontSize="12" Foreground="{StaticResource TextPrimary}" />
+                                            <TextBlock Text="Modelo da GPU:" Width="140" HorizontalAlignment="Left" FontSize="11" Foreground="{DynamicResource TextSecondary}" />
+                                            <TextBlock x:Name="GpuFullModel" Text="--" Margin="140,0,0,0" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource TextPrimary}" />
                                         </Grid>
                                         <Grid Margin="0,0,0,6">
-                                            <TextBlock Text="Versão do Driver:" Width="140" HorizontalAlignment="Left" FontSize="11" Foreground="{StaticResource TextSecondary}" />
-                                            <TextBlock x:Name="GpuDriverVer" Text="--" Margin="140,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource AccentCyan}" />
+                                            <TextBlock Text="Versão do Driver:" Width="140" HorizontalAlignment="Left" FontSize="11" Foreground="{DynamicResource TextSecondary}" />
+                                            <TextBlock x:Name="GpuDriverVer" Text="--" Margin="140,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource AccentCyan}" />
                                         </Grid>
                                         <Grid Margin="0,0,0,6">
-                                            <TextBlock Text="Resolução &amp; Taxa:" Width="140" HorizontalAlignment="Left" FontSize="11" Foreground="{StaticResource TextSecondary}" />
-                                            <TextBlock x:Name="GpuResolution" Text="--" Margin="140,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource TextPrimary}" />
+                                            <TextBlock Text="Resolução &amp; Taxa:" Width="140" HorizontalAlignment="Left" FontSize="11" Foreground="{DynamicResource TextSecondary}" />
+                                            <TextBlock x:Name="GpuResolution" Text="--" Margin="140,0,0,0" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource TextPrimary}" />
                                         </Grid>
                                         <Grid Margin="0,0,0,4">
-                                            <TextBlock Text="Memória de Vídeo:" Width="140" HorizontalAlignment="Left" FontSize="11" Foreground="{StaticResource TextSecondary}" />
-                                            <TextBlock x:Name="GpuTabVramVal" Text="-- / -- MB" Margin="140,0,0,0" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentPurple}" />
+                                            <TextBlock Text="Memória de Vídeo:" Width="140" HorizontalAlignment="Left" FontSize="11" Foreground="{DynamicResource TextSecondary}" />
+                                            <TextBlock x:Name="GpuTabVramVal" Text="-- / -- MB" Margin="140,0,0,0" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource AccentPurple}" />
                                         </Grid>
                                     </StackPanel>
                                 </Border>
 
                                 <!-- Lista de Todas as Placas de Vídeo (Dedicada & Integrada) -->
-                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,12,0,0">
+                                <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,12,0,0">
                                     <StackPanel>
-                                        <TextBlock Text="TODAS AS PLACAS DE VÍDEO &amp; CONTROLADORES DETECTADOS" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentCyan}" Margin="0,0,0,8" />
+                                        <TextBlock Text="TODAS AS PLACAS DE VÍDEO &amp; CONTROLADORES DETECTADOS" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource AccentCyan}" Margin="0,0,0,8" />
                                         <ItemsControl x:Name="AllGpusItemsControl">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Border Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,6">
+                                                    <Border Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,6">
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="Auto" />
@@ -604,18 +604,18 @@
                                                                 <ColumnDefinition Width="Auto" />
                                                                 <ColumnDefinition Width="Auto" />
                                                             </Grid.ColumnDefinitions>
-                                                            <Border Grid.Column="0" Background="#1E293B" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1.5" CornerRadius="8" Width="36" Height="36" Margin="0,0,12,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                                <TextBlock Text="🎮" FontSize="16" FontFamily="Segoe UI Emoji, Segoe UI Symbol" Foreground="{StaticResource AccentCyan}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                            <Border Grid.Column="0" Background="{DynamicResource BgBadge}" BorderBrush="{DynamicResource AccentCyan}" BorderThickness="1.5" CornerRadius="8" Width="36" Height="36" Margin="0,0,12,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                                <TextBlock Text="🎮" FontSize="16" FontFamily="Segoe UI Emoji, Segoe UI Symbol" Foreground="{DynamicResource AccentCyan}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             </Border>
                                                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource TextPrimary}" />
-                                                                <TextBlock Text="{Binding VideoProcessor, StringFormat='Processador: {0}'}" FontSize="10" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,0" />
+                                                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource TextPrimary}" />
+                                                                <TextBlock Text="{Binding VideoProcessor, StringFormat='Processador: {0}'}" FontSize="10" Foreground="{DynamicResource TextSecondary}" Margin="0,2,0,0" />
                                                             </StackPanel>
                                                             <Border Grid.Column="2" Background="#1A2D22" CornerRadius="4" Padding="8,4" Margin="0,0,10,0" VerticalAlignment="Center">
-                                                                <TextBlock Text="{Binding AdapterRamGb, StringFormat='VRAM: {0:F1} GB'}" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" />
+                                                                <TextBlock Text="{Binding AdapterRamGb, StringFormat='VRAM: {0:F1} GB'}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}" />
                                                             </Border>
                                                             <Border Grid.Column="3" Background="#1A2733" CornerRadius="4" Padding="8,4" VerticalAlignment="Center">
-                                                                <TextBlock Text="{Binding DriverVersion, StringFormat='Driver: {0}'}" FontSize="10" Foreground="{StaticResource AccentCyan}" />
+                                                                <TextBlock Text="{Binding DriverVersion, StringFormat='Driver: {0}'}" FontSize="10" Foreground="{DynamicResource AccentCyan}" />
                                                             </Border>
                                                         </Grid>
                                                     </Border>
@@ -631,7 +631,7 @@
 
                 <!-- TAB 5: DISCOS & ANALISADOR DE PASTAS (COM GRÁFICO DE PIZZA) -->
                 <TabItem Header="💾 Discos &amp; Analisador de Pastas">
-                    <Border Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="12">
+                    <Border Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="12">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <!-- Top: Physical / Logical Disks summary -->
@@ -642,11 +642,11 @@
 
                             <!-- Top: Disks list -->
                             <StackPanel Grid.Row="0" Margin="0,0,0,10">
-                                <TextBlock Text="UNIDADES DE DISCO (FÍSICO &amp; SMART)" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentOrange}" Margin="0,0,0,6" />
+                                <TextBlock Text="UNIDADES DE DISCO (FÍSICO &amp; SMART)" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource AccentOrange}" Margin="0,0,0,6" />
                                 <ItemsControl x:Name="DisksSummaryItemsControl">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="8,6" Margin="0,0,0,4">
+                                            <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="8,6" Margin="0,0,0,4">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="2*" />
@@ -654,18 +654,18 @@
                                                         <ColumnDefinition Width="2*" />
                                                     </Grid.ColumnDefinitions>
                                                     <StackPanel Grid.Column="0">
-                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="11" Foreground="{StaticResource TextPrimary}" />
-                                                        <TextBlock Text="{Binding PhysicalModel, StringFormat='Modelo: {0}'}" FontSize="10" Foreground="{StaticResource TextMuted}" />
+                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource TextPrimary}" />
+                                                        <TextBlock Text="{Binding PhysicalModel, StringFormat='Modelo: {0}'}" FontSize="10" Foreground="{DynamicResource TextMuted}" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding Temperature, StringFormat='Temp: {0:F0} °C'}" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentOrange}" />
+                                                        <TextBlock Text="{Binding Temperature, StringFormat='Temp: {0:F0} °C'}" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource AccentOrange}" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                                         <Grid>
-                                                            <TextBlock Text="{Binding UsedGb, StringFormat='{}{0:F0} GB usados'}" FontSize="10" Foreground="{StaticResource TextSecondary}" />
-                                                            <TextBlock Text="{Binding FreeGb, StringFormat='{}{0:F0} GB livres'}" HorizontalAlignment="Right" FontSize="10" Foreground="{StaticResource AccentGreen}" />
+                                                            <TextBlock Text="{Binding UsedGb, StringFormat='{}{0:F0} GB usados'}" FontSize="10" Foreground="{DynamicResource TextSecondary}" />
+                                                            <TextBlock Text="{Binding FreeGb, StringFormat='{}{0:F0} GB livres'}" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource AccentGreen}" />
                                                         </Grid>
-                                                        <ProgressBar Style="{StaticResource ModernProgress}" Foreground="{StaticResource AccentOrange}" Value="{Binding UsagePercent}" Maximum="100" Height="5" Margin="0,3,0,0" />
+                                                        <ProgressBar Style="{StaticResource ModernProgress}" Foreground="{DynamicResource AccentOrange}" Value="{Binding UsagePercent}" Maximum="100" Height="5" Margin="0,3,0,0" />
                                                     </StackPanel>
                                                 </Grid>
                                             </Border>
@@ -675,7 +675,7 @@
                             </StackPanel>
 
                             <!-- Bottom: Interactive Disk Space Explorer (Pie Chart & Drill-down) -->
-                            <Border Grid.Row="1" Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="12">
+                            <Border Grid.Row="1" Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="12">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <!-- Toolbar / Breadcrumb path -->
@@ -694,26 +694,26 @@
                                         </Grid.ColumnDefinitions>
 
                                         <!-- Drive Selector -->
-                                        <ComboBox x:Name="DiskDriveCombo" SelectionChanged="DiskDriveCombo_SelectionChanged" Width="70" Height="28" Margin="0,0,6,0" Background="#1E2235" Foreground="#00F0FF" BorderBrush="{StaticResource BorderCard}" />
+                                        <ComboBox x:Name="DiskDriveCombo" SelectionChanged="DiskDriveCombo_SelectionChanged" Width="70" Height="28" Margin="0,0,6,0" Background="{DynamicResource BgBadge}" Foreground="#00F0FF" BorderBrush="{DynamicResource BorderCard}" />
 
                                         <!-- Up / Back Button -->
-                                        <Button x:Name="BtnDiskUp" Click="BtnDiskUp_Click" Grid.Column="1" Background="#1E2235" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" Foreground="{StaticResource TextPrimary}" FontWeight="Bold" Padding="10,4" Margin="0,0,6,0" Cursor="Hand">
+                                        <Button x:Name="BtnDiskUp" Click="BtnDiskUp_Click" Grid.Column="1" Background="{DynamicResource BgBadge}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" Foreground="{DynamicResource TextPrimary}" FontWeight="Bold" Padding="10,4" Margin="0,0,6,0" Cursor="Hand">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="⬆️ Subir Pasta" FontSize="11" />
                                             </StackPanel>
                                         </Button>
 
                                         <!-- Current Path Display -->
-                                        <Border Grid.Column="2" Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="4" Padding="8,4" Margin="0,0,6,0">
-                                            <TextBlock x:Name="DiskCurrentPathText" Text="C:\" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource AccentCyan}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                        <Border Grid.Column="2" Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="4" Padding="8,4" Margin="0,0,6,0">
+                                            <TextBlock x:Name="DiskCurrentPathText" Text="C:\" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentCyan}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
                                         </Border>
 
                                         <!-- Actions -->
                                         <StackPanel Grid.Column="3" Orientation="Horizontal">
-                                            <Button Click="BtnRefreshDisk_Click" Background="#1E2235" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" Foreground="{StaticResource TextSecondary}" Padding="8,4" Margin="0,0,4,0" Cursor="Hand" ToolTip="Recalcular espaço desta pasta">
+                                            <Button Click="BtnRefreshDisk_Click" Background="{DynamicResource BgBadge}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" Foreground="{DynamicResource TextSecondary}" Padding="8,4" Margin="0,0,4,0" Cursor="Hand" ToolTip="Recalcular espaço desta pasta">
                                                 <TextBlock Text="🔄" FontSize="11" />
                                             </Button>
-                                            <Button Click="BtnOpenExplorer_Click" Background="#1E2235" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" Foreground="{StaticResource TextSecondary}" Padding="8,4" Cursor="Hand" ToolTip="Abrir no Windows Explorer">
+                                            <Button Click="BtnOpenExplorer_Click" Background="{DynamicResource BgBadge}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" Foreground="{DynamicResource TextSecondary}" Padding="8,4" Cursor="Hand" ToolTip="Abrir no Windows Explorer">
                                                 <TextBlock Text="📁 Abrir" FontSize="11" />
                                             </Button>
                                         </StackPanel>
@@ -727,22 +727,22 @@
                                         </Grid.ColumnDefinitions>
 
                                         <!-- Left: Custom Donut / Pie Chart -->
-                                        <Border Grid.Column="0" Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,10,0">
+                                        <Border Grid.Column="0" Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,10,0">
                                             <Grid>
                                                 <!-- Canvas for Vector Slices -->
                                                 <Canvas x:Name="DiskPieCanvas" Width="260" Height="260" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
                                                 <!-- Center Label inside Donut -->
                                                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
-                                                    <TextBlock x:Name="DiskCenterSizeText" Text="--" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" HorizontalAlignment="Center" />
-                                                    <TextBlock x:Name="DiskCenterSubText" Text="Total na Pasta" FontSize="10" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center" />
-                                                    <TextBlock x:Name="DiskScanningStatus" Text="" FontSize="9" FontWeight="SemiBold" Foreground="{StaticResource AccentCyan}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                    <TextBlock x:Name="DiskCenterSizeText" Text="--" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" HorizontalAlignment="Center" />
+                                                    <TextBlock x:Name="DiskCenterSubText" Text="Total na Pasta" FontSize="10" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" />
+                                                    <TextBlock x:Name="DiskScanningStatus" Text="" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource AccentCyan}" HorizontalAlignment="Center" Margin="0,2,0,0" />
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
 
                                         <!-- Right: Detailed Drill-down List -->
-                                        <Border Grid.Column="1" Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="10">
+                                        <Border Grid.Column="1" Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="10">
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
@@ -750,14 +750,14 @@
                                                 </Grid.RowDefinitions>
 
                                                 <Grid Grid.Row="0" Margin="4,0,4,6">
-                                                    <TextBlock Text="PASTAS &amp; ARQUIVOS MAIORES (CLIQUE DUPLO P/ ENTRAR)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock Text="TAMANHO / %" HorizontalAlignment="Right" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                    <TextBlock Text="PASTAS &amp; ARQUIVOS MAIORES (CLIQUE DUPLO P/ ENTRAR)" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock Text="TAMANHO / %" HorizontalAlignment="Right" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
                                                 </Grid>
 
                                                 <ListBox x:Name="DiskItemsListBox" Grid.Row="1" Background="Transparent" BorderThickness="0" MouseDoubleClick="DiskItemsListBox_MouseDoubleClick">
                                                     <ListBox.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Border Background="#161926" BorderBrush="#222638" BorderThickness="1" CornerRadius="6" Padding="10,6" Margin="0,0,0,4" Cursor="Hand">
+                                                            <Border Background="{DynamicResource BgCardInner}" BorderBrush="#222638" BorderThickness="1" CornerRadius="6" Padding="10,6" Margin="0,0,0,4" Cursor="Hand">
                                                                 <Grid>
                                                                     <Grid.ColumnDefinitions>
                                                                         <ColumnDefinition Width="Auto" />
@@ -770,14 +770,14 @@
 
                                                                     <!-- Name and Type -->
                                                                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,8,0">
-                                                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource TextPrimary}" TextTrimming="CharacterEllipsis" />
+                                                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource TextPrimary}" TextTrimming="CharacterEllipsis" />
                                                                         <ProgressBar Style="{StaticResource ModernProgress}" Foreground="{Binding ColorBrush}" Value="{Binding Percentage}" Maximum="100" Height="4" Margin="0,4,0,0" />
                                                                     </StackPanel>
 
                                                                     <!-- Size & Percentage -->
                                                                     <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                                                        <TextBlock Text="{Binding SizeDisplay}" FontWeight="Bold" FontSize="11" Foreground="{StaticResource TextPrimary}" HorizontalAlignment="Right" />
-                                                                        <TextBlock Text="{Binding Percentage, StringFormat='{}{0:F1}%'}" FontSize="10" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Right" />
+                                                                        <TextBlock Text="{Binding SizeDisplay}" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource TextPrimary}" HorizontalAlignment="Right" />
+                                                                        <TextBlock Text="{Binding Percentage, StringFormat='{}{0:F1}%'}" FontSize="10" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Right" />
                                                                     </StackPanel>
                                                                 </Grid>
                                                             </Border>
@@ -795,11 +795,11 @@
 
                 <!-- TAB 6: PERIFÉRICOS & DISPOSITIVOS -->
                 <TabItem Header="⌨️ Periféricos &amp; Dispositivos">
-                    <Border Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
+                    <Border Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
                                 <!-- BANNER DE ACESSO RÁPIDO: TESTADOR DE BALANÇAS COMERCIAIS & PLACAS SERIAIS PCI-e -->
-                                <Border Background="#121D24" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,14">
+                                <Border Background="#121D24" BorderBrush="{DynamicResource AccentCyan}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,14">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -810,21 +810,21 @@
                                             <TextBlock Text="⚖️" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Border>
                                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                            <TextBlock Text="TESTADOR DE PORTAS SERIAIS &amp; BALANÇAS COMERCIAIS (PLACAS PCI-E)" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentCyan}" />
-                                            <TextBlock Text="Diagnostique portas RS-232, placas PCI-Express x1 e comunique diretamente com balanças Toledo Prix, Filizola e Balmak com envio de ENQ (0x05) e leitura de pinos CTS/DSR." FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,0" />
+                                            <TextBlock Text="TESTADOR DE PORTAS SERIAIS &amp; BALANÇAS COMERCIAIS (PLACAS PCI-E)" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource AccentCyan}" />
+                                            <TextBlock Text="Diagnostique portas RS-232, placas PCI-Express x1 e comunique diretamente com balanças Toledo Prix, Filizola e Balmak com envio de ENQ (0x05) e leitura de pinos CTS/DSR." FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,2,0,0" />
                                         </StackPanel>
-                                        <Button x:Name="BtnGoToSerialTab" Click="BtnGoToSerialTab_Click" Grid.Column="2" Background="{StaticResource AccentCyan}" Foreground="#0B0C10" FontWeight="Bold" FontSize="11" Padding="12,6" Cursor="Hand" VerticalAlignment="Center">
+                                        <Button x:Name="BtnGoToSerialTab" Click="BtnGoToSerialTab_Click" Grid.Column="2" Background="{DynamicResource AccentCyan}" Foreground="#0B0C10" FontWeight="Bold" FontSize="11" Padding="12,6" Cursor="Hand" VerticalAlignment="Center">
                                             <TextBlock Text="🔌 Abrir Testador Serial" />
                                         </Button>
                                     </Grid>
                                 </Border>
 
-                                <TextBlock Text="TODOS OS PERIFÉRICOS E CONTROLADORES DETECTADOS" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentCyan}" Margin="0,0,0,12" />
+                                <TextBlock Text="TODOS OS PERIFÉRICOS E CONTROLADORES DETECTADOS" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentCyan}" Margin="0,0,0,12" />
 
                                 <ItemsControl x:Name="PeripheralsItemsControl">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,6">
+                                            <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,6">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" />
@@ -832,20 +832,20 @@
                                                         <ColumnDefinition Width="Auto" />
                                                     </Grid.ColumnDefinitions>
 
-                                                    <Border Grid.Column="0" Background="#1E293B" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1.5" CornerRadius="8" Width="38" Height="38" Margin="0,0,12,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding Icon}" FontSize="18" FontFamily="Segoe UI Emoji, Segoe UI Symbol" Foreground="{StaticResource AccentCyan}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                    <Border Grid.Column="0" Background="{DynamicResource BgBadge}" BorderBrush="{DynamicResource AccentCyan}" BorderThickness="1.5" CornerRadius="8" Width="38" Height="38" Margin="0,0,12,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Icon}" FontSize="18" FontFamily="Segoe UI Emoji, Segoe UI Symbol" Foreground="{DynamicResource AccentCyan}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                     </Border>
 
                                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource TextPrimary}" />
+                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource TextPrimary}" />
                                                         <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                                                            <TextBlock Text="{Binding Category, StringFormat='Categoria: {0}'}" FontSize="10" Foreground="{StaticResource TextSecondary}" Margin="0,0,12,0" />
-                                                            <TextBlock Text="{Binding Manufacturer, StringFormat='Fabricante: {0}'}" FontSize="10" Foreground="{StaticResource TextMuted}" />
+                                                            <TextBlock Text="{Binding Category, StringFormat='Categoria: {0}'}" FontSize="10" Foreground="{DynamicResource TextSecondary}" Margin="0,0,12,0" />
+                                                            <TextBlock Text="{Binding Manufacturer, StringFormat='Fabricante: {0}'}" FontSize="10" Foreground="{DynamicResource TextMuted}" />
                                                         </StackPanel>
                                                     </StackPanel>
 
                                                     <Border Grid.Column="2" Background="#142820" CornerRadius="4" Padding="8,3" VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding Status}" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource AccentGreen}" />
+                                                        <TextBlock Text="{Binding Status}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentGreen}" />
                                                     </Border>
                                                 </Grid>
                                             </Border>
@@ -858,11 +858,11 @@
                 </TabItem>
                 <!-- TAB 7: REDE & DIAGNÓSTICO TI (Canivete Suíço de Rede) -->
                 <TabItem Header="🌐 Rede &amp; Diagnóstico TI">
-                    <Border Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
+                    <Border Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
                                 <!-- BANNER DE DESTAQUE: STATUS DO LINK (GIGABIT 1000M / 100M / WI-FI) -->
-                                <Border x:Name="NetLinkStatusBanner" Background="#142820" BorderBrush="{StaticResource AccentGreen}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                <Border x:Name="NetLinkStatusBanner" Background="#142820" BorderBrush="{DynamicResource AccentGreen}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -876,22 +876,22 @@
 
                                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock x:Name="NetLinkStatusTitle" Text="LINK GIGABIT OPERANDO A 100% (1000 Mbps Full-Duplex)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentGreen}" />
+                                                <TextBlock x:Name="NetLinkStatusTitle" Text="LINK GIGABIT OPERANDO A 100% (1000 Mbps Full-Duplex)" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentGreen}" />
                                                 <Border Background="#1A3326" CornerRadius="4" Padding="6,2" Margin="8,0,0,0">
-                                                    <TextBlock x:Name="NetLinkStatusBadge" Text="TODOS OS 8 PINOS OK" FontSize="9" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" />
+                                                    <TextBlock x:Name="NetLinkStatusBadge" Text="TODOS OS 8 PINOS OK" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}" />
                                                 </Border>
                                             </StackPanel>
-                                            <TextBlock x:Name="NetLinkStatusDetail" Text="Cabo de rede RJ45 em perfeita negociação com o switch/roteador. 4 pares ativos." FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,0" TextWrapping="Wrap" />
+                                            <TextBlock x:Name="NetLinkStatusDetail" Text="Cabo de rede RJ45 em perfeita negociação com o switch/roteador. 4 pares ativos." FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,3,0,0" TextWrapping="Wrap" />
                                         </StackPanel>
 
-                                        <Border Grid.Column="2" Background="#101D17" BorderBrush="{StaticResource AccentGreen}" BorderThickness="1" CornerRadius="6" Padding="12,6" VerticalAlignment="Center">
-                                            <TextBlock x:Name="NetLinkSpeedMetric" Text="1000 Mbps" FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" />
+                                        <Border Grid.Column="2" Background="#101D17" BorderBrush="{DynamicResource AccentGreen}" BorderThickness="1" CornerRadius="6" Padding="12,6" VerticalAlignment="Center">
+                                            <TextBlock x:Name="NetLinkSpeedMetric" Text="1000 Mbps" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}" />
                                         </Border>
                                     </Grid>
                                 </Border>
 
                                 <!-- CARD INFORMATIVO DE WI-FI (SE DISPONÍVEL) -->
-                                <Border x:Name="WifiDetailsBox" Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                <Border x:Name="WifiDetailsBox" Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
                                     <StackPanel>
                                         <Grid Margin="0,0,0,8">
                                             <Grid.ColumnDefinitions>
@@ -899,10 +899,10 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="📶 DIAGNÓSTICO DE REDE SEM FIO (WI-FI)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentPurple}" />
-                                                <TextBlock x:Name="TxtWifiStatus" Text=" • Conectado" FontSize="11" Foreground="{StaticResource AccentGreen}" Margin="6,0,0,0" VerticalAlignment="Center" />
+                                                <TextBlock Text="📶 DIAGNÓSTICO DE REDE SEM FIO (WI-FI)" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentPurple}" />
+                                                <TextBlock x:Name="TxtWifiStatus" Text=" • Conectado" FontSize="11" Foreground="{DynamicResource AccentGreen}" Margin="6,0,0,0" VerticalAlignment="Center" />
                                             </StackPanel>
-                                            <Button Click="BtnRefreshWifi_Click" Grid.Column="1" Background="#1E2235" Foreground="{StaticResource AccentPurple}" BorderBrush="{StaticResource BorderCard}" Padding="10,4" FontSize="11" Cursor="Hand">
+                                            <Button Click="BtnRefreshWifi_Click" Grid.Column="1" Background="{DynamicResource BgBadge}" Foreground="{DynamicResource AccentPurple}" BorderBrush="{DynamicResource BorderCard}" Padding="10,4" FontSize="11" Cursor="Hand">
                                                 <TextBlock Text="🔄 Atualizar Wi-Fi" />
                                             </Button>
                                         </Grid>
@@ -916,38 +916,38 @@
                                             </Grid.ColumnDefinitions>
 
                                             <!-- SSID -->
-                                            <Border Grid.Column="0" Background="#10121C" CornerRadius="6" Padding="10" Margin="0,0,4,0">
+                                            <Border Grid.Column="0" Background="{DynamicResource BgCardDeep}" CornerRadius="6" Padding="10" Margin="0,0,4,0">
                                                 <StackPanel>
-                                                    <TextBlock Text="NOME DA REDE (SSID)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="WifiSsidVal" Text="Carregando..." FontSize="12" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" />
-                                                    <TextBlock x:Name="WifiBssidVal" Text="BSSID: --" FontSize="9" Foreground="{StaticResource TextMuted}" Margin="0,1,0,0" />
+                                                    <TextBlock Text="NOME DA REDE (SSID)" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="WifiSsidVal" Text="Carregando..." FontSize="12" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" />
+                                                    <TextBlock x:Name="WifiBssidVal" Text="BSSID: --" FontSize="9" Foreground="{DynamicResource TextMuted}" Margin="0,1,0,0" />
                                                 </StackPanel>
                                             </Border>
 
                                             <!-- Sinal -->
-                                            <Border Grid.Column="1" Background="#10121C" CornerRadius="6" Padding="10" Margin="2,0,2,0">
+                                            <Border Grid.Column="1" Background="{DynamicResource BgCardDeep}" CornerRadius="6" Padding="10" Margin="2,0,2,0">
                                                 <StackPanel>
-                                                    <TextBlock Text="FORÇA DO SINAL" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="WifiSignalVal" Text="-- %" FontSize="13" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" Margin="0,2,0,0" />
-                                                    <TextBlock x:Name="WifiSecurityVal" Text="WPA2-Personal" FontSize="9" Foreground="{StaticResource TextMuted}" Margin="0,1,0,0" />
+                                                    <TextBlock Text="FORÇA DO SINAL" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="WifiSignalVal" Text="-- %" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}" Margin="0,2,0,0" />
+                                                    <TextBlock x:Name="WifiSecurityVal" Text="WPA2-Personal" FontSize="9" Foreground="{DynamicResource TextMuted}" Margin="0,1,0,0" />
                                                 </StackPanel>
                                             </Border>
 
                                             <!-- Canal & Frequência -->
-                                            <Border Grid.Column="2" Background="#10121C" CornerRadius="6" Padding="10" Margin="2,0,2,0">
+                                            <Border Grid.Column="2" Background="{DynamicResource BgCardDeep}" CornerRadius="6" Padding="10" Margin="2,0,2,0">
                                                 <StackPanel>
-                                                    <TextBlock Text="CANAL &amp; PADRÃO" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="WifiChannelVal" Text="Canal --" FontSize="12" FontWeight="Bold" Foreground="{StaticResource AccentCyan}" Margin="0,2,0,0" />
-                                                    <TextBlock x:Name="WifiStandardVal" Text="802.11ax (Wi-Fi 6)" FontSize="9" Foreground="{StaticResource TextMuted}" Margin="0,1,0,0" />
+                                                    <TextBlock Text="CANAL &amp; PADRÃO" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="WifiChannelVal" Text="Canal --" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource AccentCyan}" Margin="0,2,0,0" />
+                                                    <TextBlock x:Name="WifiStandardVal" Text="802.11ax (Wi-Fi 6)" FontSize="9" Foreground="{DynamicResource TextMuted}" Margin="0,1,0,0" />
                                                 </StackPanel>
                                             </Border>
 
                                             <!-- Velocidade Tx/Rx -->
-                                            <Border Grid.Column="3" Background="#10121C" CornerRadius="6" Padding="10" Margin="4,0,0,0">
+                                            <Border Grid.Column="3" Background="{DynamicResource BgCardDeep}" CornerRadius="6" Padding="10" Margin="4,0,0,0">
                                                 <StackPanel>
-                                                    <TextBlock Text="VELOCIDADE LINK (TX/RX)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="WifiSpeedVal" Text="-- Mbps" FontSize="12" FontWeight="Bold" Foreground="{StaticResource AccentOrange}" Margin="0,2,0,0" />
-                                                    <TextBlock Text="Negociado com roteador" FontSize="9" Foreground="{StaticResource TextMuted}" Margin="0,1,0,0" />
+                                                    <TextBlock Text="VELOCIDADE LINK (TX/RX)" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="WifiSpeedVal" Text="-- Mbps" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource AccentOrange}" Margin="0,2,0,0" />
+                                                    <TextBlock Text="Negociado com roteador" FontSize="9" Foreground="{DynamicResource TextMuted}" Margin="0,1,0,0" />
                                                 </StackPanel>
                                             </Border>
                                         </Grid>
@@ -955,7 +955,7 @@
                                 </Border>
 
                                 <!-- TOPO: Status da Conexão Ativa & Diagnóstico Físico do Cabo RJ45 -->
-                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
                                     <StackPanel>
                                         <Grid Margin="0,0,0,10">
                                             <Grid.ColumnDefinitions>
@@ -963,11 +963,11 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="🔌 DIAGNÓSTICO FÍSICO DO CABO RJ45 &amp; LINK" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentCyan}" />
-                                                <TextBlock Text=" • Status da camada física da placa" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                                                <TextBlock Text="🔌 DIAGNÓSTICO FÍSICO DO CABO RJ45 &amp; LINK" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentCyan}" />
+                                                <TextBlock Text=" • Status da camada física da placa" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="8,0,0,0" VerticalAlignment="Center" />
                                             </StackPanel>
                                             <Button x:Name="BtnRefreshNetDiag" Grid.Column="1" Click="BtnRefreshNetDiag_Click"
-                                                    Background="#1E2235" Foreground="{StaticResource AccentCyan}" BorderBrush="{StaticResource BorderCard}"
+                                                    Background="{DynamicResource BgBadge}" Foreground="{DynamicResource AccentCyan}" BorderBrush="{DynamicResource BorderCard}"
                                                     Padding="10,4" FontSize="11" FontWeight="SemiBold" Cursor="Hand">
                                                 <TextBlock Text="🔄 Atualizar Leitura" />
                                             </Button>
@@ -977,7 +977,7 @@
                                         <ItemsControl x:Name="CableDiagItemsControl">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Border Background="#10121C" BorderBrush="{Binding StatusBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,8">
+                                                    <Border Background="{DynamicResource BgCardDeep}" BorderBrush="{Binding StatusBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,8">
                                                         <Grid>
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="Auto" />
@@ -991,11 +991,11 @@
                                                                 </Grid.ColumnDefinitions>
 
                                                                 <StackPanel>
-                                                                    <TextBlock Text="{Binding AdapterName}" FontWeight="Bold" FontSize="13" Foreground="{StaticResource TextPrimary}" />
-                                                                    <TextBlock Text="{Binding AdapterDescription}" FontSize="10" Foreground="{StaticResource TextMuted}" Margin="0,2,0,0" />
+                                                                    <TextBlock Text="{Binding AdapterName}" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource TextPrimary}" />
+                                                                    <TextBlock Text="{Binding AdapterDescription}" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0" />
                                                                 </StackPanel>
 
-                                                                <Border Grid.Column="1" Background="#1E2235" CornerRadius="4" Padding="10,4" VerticalAlignment="Center">
+                                                                <Border Grid.Column="1" Background="{DynamicResource BgBadge}" CornerRadius="4" Padding="10,4" VerticalAlignment="Center">
                                                                     <TextBlock Text="{Binding LinkSpeedDisplay}" FontWeight="Bold" FontSize="12" Foreground="{Binding StatusBrush}" />
                                                                 </Border>
                                                             </Grid>
@@ -1004,7 +1004,7 @@
                                                             <Border Grid.Row="1" Background="#161824" CornerRadius="4" Padding="10,8" Margin="0,8,0,0">
                                                                 <StackPanel>
                                                                     <TextBlock Text="{Binding WarningTitle}" FontWeight="Bold" FontSize="11" Foreground="{Binding StatusBrush}" />
-                                                                    <TextBlock Text="{Binding PinDiagnosticMessage}" FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap" Margin="0,4,0,0" LineHeight="16" />
+                                                                    <TextBlock Text="{Binding PinDiagnosticMessage}" FontSize="11" Foreground="{DynamicResource TextSecondary}" TextWrapping="Wrap" Margin="0,4,0,0" LineHeight="16" />
                                                                 </StackPanel>
                                                             </Border>
                                                         </Grid>
@@ -1016,16 +1016,16 @@
                                 </Border>
 
                                 <!-- SEGUNDO BLOCO: TESTE DE CONECTIVIDADE EM 3 CAMADAS (ISOLAR ONDE CAIU A INTERNET) -->
-                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
                                     <StackPanel>
                                         <Grid Margin="0,0,0,10">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="⚡ TESTE DE CONECTIVIDADE (ONDE ESTÁ A FALHA?)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentGreen}" VerticalAlignment="Center" />
+                                            <TextBlock Text="⚡ TESTE DE CONECTIVIDADE (ONDE ESTÁ A FALHA?)" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentGreen}" VerticalAlignment="Center" />
                                             <Button x:Name="BtnTestConnectivity" Grid.Column="1" Click="BtnTestConnectivity_Click"
-                                                    Background="#142820" Foreground="{StaticResource AccentGreen}" BorderBrush="{StaticResource AccentGreen}"
+                                                    Background="#142820" Foreground="{DynamicResource AccentGreen}" BorderBrush="{DynamicResource AccentGreen}"
                                                     Padding="12,4" FontSize="11" FontWeight="SemiBold" Cursor="Hand">
                                                 <TextBlock Text="▶️ Testar Conexão Agora" />
                                             </Button>
@@ -1039,47 +1039,47 @@
                                             </Grid.ColumnDefinitions>
 
                                             <!-- Ponto 1: Gateway Local -->
-                                            <Border Grid.Column="0" Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,6,0">
+                                            <Border Grid.Column="0" Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,6,0">
                                                 <StackPanel>
-                                                    <TextBlock Text="1. ROTEADOR LOCAL (GATEWAY)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="ConnGatewayAddr" Text="Detectando..." FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,6" />
-                                                    <TextBlock x:Name="ConnGatewayLatency" Text="-- ms" FontSize="18" FontWeight="Bold" Foreground="{StaticResource AccentCyan}" />
-                                                    <TextBlock x:Name="ConnGatewayStatus" Text="Não testado" FontSize="10" Foreground="{StaticResource TextMuted}" Margin="0,2,0,0" />
+                                                    <TextBlock Text="1. ROTEADOR LOCAL (GATEWAY)" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock x:Name="ConnGatewayAddr" Text="Detectando..." FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,3,0,6" />
+                                                    <TextBlock x:Name="ConnGatewayLatency" Text="-- ms" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource AccentCyan}" />
+                                                    <TextBlock x:Name="ConnGatewayStatus" Text="Não testado" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0" />
                                                 </StackPanel>
                                             </Border>
 
                                             <!-- Ponto 2: WAN / DNS 1.1.1.1 -->
-                                            <Border Grid.Column="1" Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="3,0,3,0">
+                                            <Border Grid.Column="1" Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="3,0,3,0">
                                                 <StackPanel>
-                                                    <TextBlock Text="2. PROVEDOR / WAN (1.1.1.1)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock Text="Cloudflare DNS" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,6" />
-                                                    <TextBlock x:Name="ConnWanLatency" Text="-- ms" FontSize="18" FontWeight="Bold" Foreground="{StaticResource AccentGreen}" />
-                                                    <TextBlock x:Name="ConnWanStatus" Text="Não testado" FontSize="10" Foreground="{StaticResource TextMuted}" Margin="0,2,0,0" />
+                                                    <TextBlock Text="2. PROVEDOR / WAN (1.1.1.1)" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock Text="Cloudflare DNS" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,3,0,6" />
+                                                    <TextBlock x:Name="ConnWanLatency" Text="-- ms" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource AccentGreen}" />
+                                                    <TextBlock x:Name="ConnWanStatus" Text="Não testado" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0" />
                                                 </StackPanel>
                                             </Border>
 
                                             <!-- Ponto 3: DNS Web google.com -->
-                                            <Border Grid.Column="2" Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="6,0,0,0">
+                                            <Border Grid.Column="2" Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="6,0,0,0">
                                                 <StackPanel>
-                                                    <TextBlock Text="3. RESOLUÇÃO WEB (google.com)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock Text="Resolução de Nomes" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,6" />
-                                                    <TextBlock x:Name="ConnWebLatency" Text="-- ms" FontSize="18" FontWeight="Bold" Foreground="{StaticResource AccentPurple}" />
-                                                    <TextBlock x:Name="ConnWebStatus" Text="Não testado" FontSize="10" Foreground="{StaticResource TextMuted}" Margin="0,2,0,0" />
+                                                    <TextBlock Text="3. RESOLUÇÃO WEB (google.com)" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                    <TextBlock Text="Resolução de Nomes" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,3,0,6" />
+                                                    <TextBlock x:Name="ConnWebLatency" Text="-- ms" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource AccentPurple}" />
+                                                    <TextBlock x:Name="ConnWebStatus" Text="Não testado" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0" />
                                                 </StackPanel>
                                             </Border>
                                         </Grid>
 
                                         <!-- Resumo e Diagnóstico da Falha -->
-                                        <Border x:Name="ConnectivitySummaryBox" Visibility="Collapsed" Background="#1B2230" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,8,0,0">
-                                            <TextBlock x:Name="ConnectivitySummaryText" Text="Status da Conexão" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource TextPrimary}" />
+                                        <Border x:Name="ConnectivitySummaryBox" Visibility="Collapsed" Background="#1B2230" BorderBrush="{DynamicResource AccentCyan}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,8,0,0">
+                                            <TextBlock x:Name="ConnectivitySummaryText" Text="Status da Conexão" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource TextPrimary}" />
                                         </Border>
                                     </StackPanel>
                                 </Border>
 
                                 <!-- TERCEIRO BLOCO: AÇÕES RÁPIDAS DE 1-CLIQUE DO TÉCNICO -->
-                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
                                     <StackPanel>
-                                        <TextBlock Text="🛠️ AÇÕES RÁPIDAS DE REPARO DE REDE (1-CLIQUE)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentOrange}" Margin="0,0,0,10" />
+                                        <TextBlock Text="🛠️ AÇÕES RÁPIDAS DE REPARO DE REDE (1-CLIQUE)" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentOrange}" Margin="0,0,0,10" />
 
                                         <Grid Margin="0,0,0,10">
                                             <Grid.ColumnDefinitions>
@@ -1091,51 +1091,51 @@
 
                                             <!-- Botão 1: Release & Renew -->
                                             <Button x:Name="BtnReleaseRenew" Grid.Column="0" Click="BtnReleaseRenew_Click" Margin="0,0,6,0"
-                                                    Background="#231C14" BorderBrush="{StaticResource AccentOrange}" BorderThickness="1"
-                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                    Background="#231C14" BorderBrush="{DynamicResource AccentOrange}" BorderThickness="1"
+                                                    Foreground="{DynamicResource TextPrimary}" Padding="10,8" Cursor="Hand">
                                                 <StackPanel HorizontalAlignment="Center">
-                                                    <TextBlock Text="🔄 IP Release &amp; Renew" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentOrange}" HorizontalAlignment="Center" />
-                                                    <TextBlock Text="Renovar IP via DHCP" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                    <TextBlock Text="🔄 IP Release &amp; Renew" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource AccentOrange}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="Renovar IP via DHCP" FontSize="9" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
                                                 </StackPanel>
                                             </Button>
 
                                             <!-- Botão 2: Flush DNS -->
                                             <Button x:Name="BtnFlushDns" Grid.Column="1" Click="BtnFlushDns_Click" Margin="3,0,3,0"
-                                                    Background="#142622" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1"
-                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                    Background="#142622" BorderBrush="{DynamicResource AccentCyan}" BorderThickness="1"
+                                                    Foreground="{DynamicResource TextPrimary}" Padding="10,8" Cursor="Hand">
                                                 <StackPanel HorizontalAlignment="Center">
-                                                    <TextBlock Text="🧹 Limpar Cache DNS" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentCyan}" HorizontalAlignment="Center" />
-                                                    <TextBlock Text="ipconfig /flushdns" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                    <TextBlock Text="🧹 Limpar Cache DNS" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource AccentCyan}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="ipconfig /flushdns" FontSize="9" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
                                                 </StackPanel>
                                             </Button>
 
                                             <!-- Botão 3: Reiniciar Placa -->
                                             <Button x:Name="BtnRestartAdapter" Grid.Column="2" Click="BtnRestartAdapter_Click" Margin="3,0,3,0"
-                                                    Background="#1D182E" BorderBrush="{StaticResource AccentPurple}" BorderThickness="1"
-                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                    Background="#1D182E" BorderBrush="{DynamicResource AccentPurple}" BorderThickness="1"
+                                                    Foreground="{DynamicResource TextPrimary}" Padding="10,8" Cursor="Hand">
                                                 <StackPanel HorizontalAlignment="Center">
-                                                    <TextBlock Text="🔌 Reiniciar Adaptador" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentPurple}" HorizontalAlignment="Center" />
-                                                    <TextBlock Text="Desativar e reativar placa" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                    <TextBlock Text="🔌 Reiniciar Adaptador" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource AccentPurple}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="Desativar e reativar placa" FontSize="9" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
                                                 </StackPanel>
                                             </Button>
 
                                             <!-- Botão 4: Reset TCP/IP Winsock -->
                                             <Button x:Name="BtnResetTcpIp" Grid.Column="3" Click="BtnResetTcpIp_Click" Margin="6,0,0,0"
-                                                    Background="#2D161C" BorderBrush="{StaticResource AccentRed}" BorderThickness="1"
-                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                    Background="#2D161C" BorderBrush="{DynamicResource AccentRed}" BorderThickness="1"
+                                                    Foreground="{DynamicResource TextPrimary}" Padding="10,8" Cursor="Hand">
                                                 <StackPanel HorizontalAlignment="Center">
-                                                    <TextBlock Text="⚠️ Resetar TCP/IP" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentRed}" HorizontalAlignment="Center" />
-                                                    <TextBlock Text="netsh winsock reset" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                    <TextBlock Text="⚠️ Resetar TCP/IP" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource AccentRed}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="netsh winsock reset" FontSize="9" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
                                                 </StackPanel>
                                             </Button>
                                         </Grid>
 
                                         <!-- Terminal / Console de Saída do Comando -->
-                                        <Border Background="#090A0F" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10">
+                                        <Border Background="{DynamicResource BgConsole}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10">
                                             <StackPanel>
                                                 <Grid Margin="0,0,0,6">
-                                                    <TextBlock Text="CONSOLE DE SAÍDA DOS COMANDOS:" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                    <Button Click="BtnClearNetLog_Click" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextMuted}" FontSize="10" Cursor="Hand">
+                                                    <TextBlock Text="CONSOLE DE SAÍDA DOS COMANDOS:" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                    <Button Click="BtnClearNetLog_Click" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextMuted}" FontSize="10" Cursor="Hand">
                                                         <TextBlock Text="[Limpar Console]" />
                                                     </Button>
                                                 </Grid>
@@ -1149,7 +1149,7 @@
                                 </Border>
 
                                 <!-- QUARTO BLOCO: SCANNER DE REDE LOCAL (DESCOBERTA DE IPs, HOSTS, MAC, FABRICANTE) -->
-                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14">
+                                <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14">
                                     <StackPanel>
                                         <Grid Margin="0,0,0,10">
                                             <Grid.ColumnDefinitions>
@@ -1159,21 +1159,21 @@
 
                                             <StackPanel>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="📡 SCANNER DE REDE LOCAL (NETWORK DISCOVERY)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentCyan}" />
-                                                    <TextBlock x:Name="TxtScannerCount" Text=" • 0 dispositivos encontrados" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="6,0,0,0" VerticalAlignment="Center" />
+                                                    <TextBlock Text="📡 SCANNER DE REDE LOCAL (NETWORK DISCOVERY)" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentCyan}" />
+                                                    <TextBlock x:Name="TxtScannerCount" Text=" • 0 dispositivos encontrados" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="6,0,0,0" VerticalAlignment="Center" />
                                                 </StackPanel>
-                                                <TextBlock x:Name="TxtLocalSubnetInfo" Text="Identificando sub-rede local..." FontSize="11" Foreground="{StaticResource TextMuted}" Margin="0,2,0,0" />
+                                                <TextBlock x:Name="TxtLocalSubnetInfo" Text="Identificando sub-rede local..." FontSize="11" Foreground="{DynamicResource TextMuted}" Margin="0,2,0,0" />
                                             </StackPanel>
 
                                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                                 <Button x:Name="BtnStartNetScan" Click="BtnStartNetScan_Click"
-                                                        Background="{StaticResource AccentCyan}" Foreground="#0B0C10" FontWeight="Bold" FontSize="12"
+                                                        Background="{DynamicResource AccentCyan}" Foreground="#0B0C10" FontWeight="Bold" FontSize="12"
                                                         Padding="16,6" Margin="0,0,8,0" Cursor="Hand">
                                                     <TextBlock Text="🔍 Iniciar Varredura de IPs" />
                                                 </Button>
 
                                                 <Button x:Name="BtnCancelNetScan" Click="BtnCancelNetScan_Click" Visibility="Collapsed"
-                                                        Background="#3B181F" Foreground="{StaticResource AccentRed}" BorderBrush="{StaticResource AccentRed}"
+                                                        Background="#3B181F" Foreground="{DynamicResource AccentRed}" BorderBrush="{DynamicResource AccentRed}"
                                                         FontWeight="Bold" FontSize="11" Padding="12,6" Cursor="Hand">
                                                     <TextBlock Text="⏹️ Cancelar" />
                                                 </Button>
@@ -1183,11 +1183,11 @@
                                         <!-- Barra de Progresso do Scanner -->
                                         <Grid x:Name="ScannerProgressPanel" Visibility="Collapsed" Margin="0,0,0,10">
                                             <ProgressBar x:Name="ScannerProgressBar" Style="{StaticResource ModernProgress}" Height="8" Minimum="0" Maximum="100" Value="0" />
-                                            <TextBlock x:Name="ScannerProgressText" Text="Varrendo rede: 0%" FontSize="10" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Right" Margin="0,10,0,0" />
+                                            <TextBlock x:Name="ScannerProgressText" Text="Varrendo rede: 0%" FontSize="10" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Right" Margin="0,10,0,0" />
                                         </Grid>
 
                                         <!-- Cabeçalho da Tabela -->
-                                        <Border Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1,1,1,0" CornerRadius="6,6,0,0" Padding="10,8">
+                                        <Border Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1,1,1,0" CornerRadius="6,6,0,0" Padding="10,8">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="40" />
@@ -1199,18 +1199,18 @@
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
 
-                                                <TextBlock Grid.Column="0" Text="TIPO" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                <TextBlock Grid.Column="1" Text="ENDEREÇO IP" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                <TextBlock Grid.Column="2" Text="NOME DO DISPOSITIVO" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                <TextBlock Grid.Column="3" Text="FABRICANTE" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                <TextBlock Grid.Column="4" Text="ENDEREÇO MAC" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                <TextBlock Grid.Column="5" Text="PING" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                <TextBlock Grid.Column="6" Text="SERVIÇOS / PORTAS DETECTADAS" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
+                                                <TextBlock Grid.Column="0" Text="TIPO" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                <TextBlock Grid.Column="1" Text="ENDEREÇO IP" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                <TextBlock Grid.Column="2" Text="NOME DO DISPOSITIVO" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                <TextBlock Grid.Column="3" Text="FABRICANTE" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                <TextBlock Grid.Column="4" Text="ENDEREÇO MAC" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                <TextBlock Grid.Column="5" Text="PING" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
+                                                <TextBlock Grid.Column="6" Text="SERVIÇOS / PORTAS DETECTADAS" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" />
                                             </Grid>
                                         </Border>
 
                                         <!-- Lista de Dispositivos Encontrados -->
-                                        <Border Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1,0,1,1" CornerRadius="0,0,6,6">
+                                        <Border Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1,0,1,1" CornerRadius="0,0,6,6">
                                             <ListBox x:Name="NetDevicesListBox" Background="Transparent" BorderThickness="0" MaxHeight="280"
                                                      ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                                 <ListBox.ItemTemplate>
@@ -1226,15 +1226,15 @@
                                                                 <ColumnDefinition Width="*" />
                                                             </Grid.ColumnDefinitions>
 
-                                                            <Border Grid.Column="0" Background="#1C2133" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1" CornerRadius="13" Width="26" Height="26" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <Border Grid.Column="0" Background="#1C2133" BorderBrush="{DynamicResource AccentCyan}" BorderThickness="1" CornerRadius="13" Width="26" Height="26" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                                 <TextBlock Text="{Binding DeviceIcon}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             </Border>
-                                                            <TextBlock Grid.Column="1" Text="{Binding IpAddress}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentCyan}" VerticalAlignment="Center" />
-                                                            <TextBlock Grid.Column="2" Text="{Binding HostName}" FontWeight="SemiBold" FontSize="11" Foreground="{StaticResource TextPrimary}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
-                                                            <TextBlock Grid.Column="3" Text="{Binding Manufacturer}" FontSize="11" Foreground="{StaticResource TextSecondary}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
-                                                            <TextBlock Grid.Column="4" Text="{Binding MacAddress}" FontFamily="Consolas" FontSize="11" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="1" Text="{Binding IpAddress}" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource AccentCyan}" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="2" Text="{Binding HostName}" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource TextPrimary}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="3" Text="{Binding Manufacturer}" FontSize="11" Foreground="{DynamicResource TextSecondary}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="4" Text="{Binding MacAddress}" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" />
                                                             <TextBlock Grid.Column="5" Text="{Binding LatencyDisplay}" FontWeight="Bold" FontSize="11" Foreground="{Binding StatusBrush}" VerticalAlignment="Center" />
-                                                            <TextBlock Grid.Column="6" Text="{Binding OpenServices}" FontSize="11" Foreground="{StaticResource TextSecondary}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="6" Text="{Binding OpenServices}" FontSize="11" Foreground="{DynamicResource TextSecondary}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
                                                         </Grid>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
@@ -1249,11 +1249,11 @@
 
                 <!-- TAB 8: PORTAS SERIAIS & TESTE DE I/O (BALANÇAS E PLACAS PCI) -->
                 <TabItem Header="🔌 Portas Seriais &amp; Balanças">
-                    <Border Background="{StaticResource BgCard}" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
+                    <Border Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="0,6,6,6" Padding="14">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
                                 <!-- TOPO: DETECÇÃO DE PLACAS PCI SERIAL E PORTAS COM -->
-                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
                                     <StackPanel>
                                         <Grid Margin="0,0,0,10">
                                             <Grid.ColumnDefinitions>
@@ -1261,11 +1261,11 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="🔌 PORTAS SERIAIS &amp; PLACAS PCI-E DETECTADAS" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentCyan}" />
-                                                <TextBlock Text=" • Diagnóstico de hardware RS-232" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                                                <TextBlock Text="🔌 PORTAS SERIAIS &amp; PLACAS PCI-E DETECTADAS" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentCyan}" />
+                                                <TextBlock Text=" • Diagnóstico de hardware RS-232" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="8,0,0,0" VerticalAlignment="Center" />
                                             </StackPanel>
                                             <Button x:Name="BtnRefreshSerialPorts" Click="BtnRefreshSerialPorts_Click" Grid.Column="1"
-                                                    Background="#1E2235" Foreground="{StaticResource AccentCyan}" BorderBrush="{StaticResource BorderCard}"
+                                                    Background="{DynamicResource BgBadge}" Foreground="{DynamicResource AccentCyan}" BorderBrush="{DynamicResource BorderCard}"
                                                     Padding="10,4" FontSize="11" FontWeight="SemiBold" Cursor="Hand">
                                                 <TextBlock Text="🔄 Atualizar Portas" />
                                             </Button>
@@ -1274,7 +1274,7 @@
                                         <ItemsControl x:Name="SerialPortsItemsControl">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Border Background="#10121C" BorderBrush="{Binding StatusBrush}" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,6">
+                                                    <Border Background="{DynamicResource BgCardDeep}" BorderBrush="{Binding StatusBrush}" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,6">
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="70" />
@@ -1283,16 +1283,16 @@
                                                                 <ColumnDefinition Width="Auto" />
                                                             </Grid.ColumnDefinitions>
 
-                                                            <Border Background="#1E2235" CornerRadius="4" Padding="8,4" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                                <TextBlock Text="{Binding PortName}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource AccentCyan}" />
+                                                            <Border Background="{DynamicResource BgBadge}" CornerRadius="4" Padding="8,4" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding PortName}" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource AccentCyan}" />
                                                             </Border>
 
                                                             <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
-                                                                <TextBlock Text="{Binding Description}" FontWeight="Bold" FontSize="12" Foreground="{StaticResource TextPrimary}" />
+                                                                <TextBlock Text="{Binding Description}" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource TextPrimary}" />
                                                                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                                                                    <TextBlock Text="{Binding CardTypeDisplay}" FontSize="10" Foreground="{StaticResource AccentPurple}" Margin="0,0,12,0" />
-                                                                    <TextBlock Text="{Binding Manufacturer, StringFormat='Fabricante: {0}'}" FontSize="10" Foreground="{StaticResource TextMuted}" Margin="0,0,12,0" />
-                                                                    <TextBlock Text="{Binding HardwareId, StringFormat='ID PnP: {0}'}" FontSize="10" Foreground="{StaticResource TextMuted}" />
+                                                                    <TextBlock Text="{Binding CardTypeDisplay}" FontSize="10" Foreground="{DynamicResource AccentPurple}" Margin="0,0,12,0" />
+                                                                    <TextBlock Text="{Binding Manufacturer, StringFormat='Fabricante: {0}'}" FontSize="10" Foreground="{DynamicResource TextMuted}" Margin="0,0,12,0" />
+                                                                    <TextBlock Text="{Binding HardwareId, StringFormat='ID PnP: {0}'}" FontSize="10" Foreground="{DynamicResource TextMuted}" />
                                                                 </StackPanel>
                                                             </StackPanel>
 
@@ -1301,8 +1301,8 @@
                                                             </Border>
 
                                                             <Button Grid.Column="3" Click="BtnSelectSerialPort_Click" Tag="{Binding PortName}"
-                                                                    Background="#1A2733" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1"
-                                                                    Foreground="{StaticResource AccentCyan}" FontSize="11" FontWeight="SemiBold"
+                                                                    Background="#1A2733" BorderBrush="{DynamicResource AccentCyan}" BorderThickness="1"
+                                                                    Foreground="{DynamicResource AccentCyan}" FontSize="11" FontWeight="SemiBold"
                                                                     Padding="10,4" Cursor="Hand" VerticalAlignment="Center">
                                                                 <TextBlock Text="Selecionar p/ Teste" />
                                                             </Button>
@@ -1315,16 +1315,16 @@
                                 </Border>
 
                                 <!-- TESTADOR / MONITOR INTERATIVO DE BALANÇA SERIAL (PCI x1) -->
-                                <Border Background="#161926" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14">
+                                <Border Background="{DynamicResource BgCardInner}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="8" Padding="14">
                                     <StackPanel>
                                         <Grid Margin="0,0,0,10">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="⚖️ TESTADOR DE BALANÇAS COMERCIAIS &amp; COMUNICAÇÃO SERIAL (RS-232)" FontWeight="Bold" FontSize="13" Foreground="{StaticResource AccentGreen}" VerticalAlignment="Center" />
-                                            <Border x:Name="SerialPortStatusBadge" Grid.Column="1" Background="#261A1A" BorderBrush="{StaticResource AccentRed}" BorderThickness="1" CornerRadius="4" Padding="10,3">
-                                                <TextBlock x:Name="SerialPortStatusText" Text="Porta Fechada" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource AccentRed}" />
+                                            <TextBlock Text="⚖️ TESTADOR DE BALANÇAS COMERCIAIS &amp; COMUNICAÇÃO SERIAL (RS-232)" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource AccentGreen}" VerticalAlignment="Center" />
+                                            <Border x:Name="SerialPortStatusBadge" Grid.Column="1" Background="#261A1A" BorderBrush="{DynamicResource AccentRed}" BorderThickness="1" CornerRadius="4" Padding="10,3">
+                                                <TextBlock x:Name="SerialPortStatusText" Text="Porta Fechada" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentRed}" />
                                             </Border>
                                         </Grid>
 
@@ -1341,14 +1341,14 @@
 
                                             <!-- Porta COM -->
                                             <StackPanel Grid.Column="0" Margin="0,0,8,0">
-                                                <TextBlock Text="PORTA COM:" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,4" />
-                                                <ComboBox x:Name="SerialPortCombo" Background="#10121C" Foreground="{StaticResource TextPrimary}" Height="28" />
+                                                <TextBlock Text="PORTA COM:" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,4" />
+                                                <ComboBox x:Name="SerialPortCombo" Background="{DynamicResource InputBg}" Foreground="{DynamicResource InputFg}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" Height="28" />
                                             </StackPanel>
 
                                             <!-- Baud Rate / Balança Preset -->
                                             <StackPanel Grid.Column="1" Margin="0,0,8,0">
-                                                <TextBlock Text="BAUD RATE (VELOCIDADE):" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,4" />
-                                                <ComboBox x:Name="SerialBaudCombo" Background="#10121C" Foreground="{StaticResource TextPrimary}" Height="28">
+                                                <TextBlock Text="BAUD RATE (VELOCIDADE):" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,4" />
+                                                <ComboBox x:Name="SerialBaudCombo" Background="{DynamicResource InputBg}" Foreground="{DynamicResource InputFg}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" Height="28">
                                                     <ComboBoxItem Content="9600 (Toledo/Prix/Filizola)" IsSelected="True" Tag="9600" />
                                                     <ComboBoxItem Content="4800 (Balanças Antigas)" Tag="4800" />
                                                     <ComboBoxItem Content="2400 (Balmak/Urano)" Tag="2400" />
@@ -1359,8 +1359,8 @@
 
                                             <!-- Data Bits -->
                                             <StackPanel Grid.Column="2" Margin="0,0,8,0">
-                                                <TextBlock Text="DATA BITS:" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,4" />
-                                                <ComboBox x:Name="SerialDataBitsCombo" Background="#10121C" Foreground="{StaticResource TextPrimary}" Height="28">
+                                                <TextBlock Text="DATA BITS:" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,4" />
+                                                <ComboBox x:Name="SerialDataBitsCombo" Background="{DynamicResource InputBg}" Foreground="{DynamicResource InputFg}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" Height="28">
                                                     <ComboBoxItem Content="8" IsSelected="True" />
                                                     <ComboBoxItem Content="7" />
                                                 </ComboBox>
@@ -1368,8 +1368,8 @@
 
                                             <!-- Paridade -->
                                             <StackPanel Grid.Column="3" Margin="0,0,8,0">
-                                                <TextBlock Text="PARIDADE:" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,4" />
-                                                <ComboBox x:Name="SerialParityCombo" Background="#10121C" Foreground="{StaticResource TextPrimary}" Height="28">
+                                                <TextBlock Text="PARIDADE:" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,4" />
+                                                <ComboBox x:Name="SerialParityCombo" Background="{DynamicResource InputBg}" Foreground="{DynamicResource InputFg}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" Height="28">
                                                     <ComboBoxItem Content="None (Nenhuma)" IsSelected="True" />
                                                     <ComboBoxItem Content="Even (Par)" />
                                                     <ComboBoxItem Content="Odd (Ímpar)" />
@@ -1378,8 +1378,8 @@
 
                                             <!-- Stop Bits -->
                                             <StackPanel Grid.Column="4" Margin="0,0,8,0">
-                                                <TextBlock Text="STOP BITS:" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="0,0,0,4" />
-                                                <ComboBox x:Name="SerialStopBitsCombo" Background="#10121C" Foreground="{StaticResource TextPrimary}" Height="28">
+                                                <TextBlock Text="STOP BITS:" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,4" />
+                                                <ComboBox x:Name="SerialStopBitsCombo" Background="{DynamicResource InputBg}" Foreground="{DynamicResource InputFg}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" Height="28">
                                                     <ComboBoxItem Content="1" IsSelected="True" />
                                                     <ComboBoxItem Content="2" />
                                                 </ComboBox>
@@ -1388,7 +1388,7 @@
                                             <!-- Botão Conectar / Desconectar -->
                                             <StackPanel Grid.Column="5" VerticalAlignment="Bottom">
                                                 <Button x:Name="BtnToggleSerialOpen" Click="BtnToggleSerialOpen_Click"
-                                                        Background="{StaticResource AccentGreen}" Foreground="#0B0C10" FontWeight="Bold" FontSize="11"
+                                                        Background="{DynamicResource AccentGreen}" Foreground="#0B0C10" FontWeight="Bold" FontSize="11"
                                                         Height="28" Padding="10,0" Cursor="Hand">
                                                     <TextBlock x:Name="TxtToggleSerialBtn" Text="🔌 Conectar e Escutar" />
                                                 </Button>
@@ -1396,7 +1396,7 @@
                                         </Grid>
 
                                         <!-- Pinos de Controle de Hardware (DTR & RTS) -->
-                                        <Border Background="#10121C" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,12">
+                                        <Border Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,12">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
@@ -1404,12 +1404,12 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                    <TextBlock Text="SINAIS DE ALIMENTAÇÃO DA BALANÇA:" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" Margin="0,0,12,0" VerticalAlignment="Center" />
-                                                    <CheckBox x:Name="ChkSerialDtr" Content="Ativar DTR (Data Terminal Ready)" IsChecked="True" Foreground="{StaticResource TextSecondary}" FontSize="11" Margin="0,0,16,0" VerticalAlignment="Center" />
-                                                    <CheckBox x:Name="ChkSerialRts" Content="Ativar RTS (Request To Send)" IsChecked="True" Foreground="{StaticResource TextSecondary}" FontSize="11" VerticalAlignment="Center" />
+                                                    <TextBlock Text="SINAIS DE ALIMENTAÇÃO DA BALANÇA:" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" Margin="0,0,12,0" VerticalAlignment="Center" />
+                                                    <CheckBox x:Name="ChkSerialDtr" Content="Ativar DTR (Data Terminal Ready)" IsChecked="True" Foreground="{DynamicResource TextPrimary}" FontWeight="SemiBold" FontSize="11" Margin="0,0,16,0" VerticalAlignment="Center" />
+                                                    <CheckBox x:Name="ChkSerialRts" Content="Ativar RTS (Request To Send)" IsChecked="True" Foreground="{DynamicResource TextPrimary}" FontWeight="SemiBold" FontSize="11" VerticalAlignment="Center" />
                                                 </StackPanel>
 
-                                                <TextBlock x:Name="TxtSerialPinStatus" Grid.Column="1" Text="Pinos de Hardware: CTS: -- • DSR: -- • CD: --" FontSize="10" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
+                                                <TextBlock x:Name="TxtSerialPinStatus" Grid.Column="1" Text="Pinos de Hardware: CTS: -- • DSR: -- • CD: --" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
 
@@ -1424,47 +1424,47 @@
 
                                             <!-- Pedir Peso Toledo Prix (0x05 ENQ) -->
                                             <Button Click="BtnSendToledoEnq_Click" Grid.Column="0" Margin="0,0,6,0"
-                                                    Background="#1A2D22" BorderBrush="{StaticResource AccentGreen}" BorderThickness="1"
-                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                    Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource AccentGreen}" BorderThickness="1.5"
+                                                    Foreground="{DynamicResource TextPrimary}" Padding="10,8" Cursor="Hand">
                                                 <StackPanel HorizontalAlignment="Center">
-                                                    <TextBlock Text="⚖️ Pedir Peso (Toledo / Prix)" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentGreen}" HorizontalAlignment="Center" />
-                                                    <TextBlock Text="Envia byte ENQ (0x05)" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                    <TextBlock Text="⚖️ Pedir Peso (Toledo / Prix)" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource AccentGreen}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="Envia byte ENQ (0x05)" FontSize="10" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
                                                 </StackPanel>
                                             </Button>
 
                                             <!-- Pedir Peso Filizola (P\r\n) -->
                                             <Button Click="BtnSendFilizola_Click" Grid.Column="1" Margin="3,0,3,0"
-                                                    Background="#1B2230" BorderBrush="{StaticResource AccentCyan}" BorderThickness="1"
-                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                    Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource AccentCyan}" BorderThickness="1.5"
+                                                    Foreground="{DynamicResource TextPrimary}" Padding="10,8" Cursor="Hand">
                                                 <StackPanel HorizontalAlignment="Center">
-                                                    <TextBlock Text="⚖️ Pedir Peso (Filizola / Elgin)" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentCyan}" HorizontalAlignment="Center" />
-                                                    <TextBlock Text="Envia comando 'P' (ASCII)" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                    <TextBlock Text="⚖️ Pedir Peso (Filizola / Elgin)" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource AccentCyan}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="Envia comando 'P' (ASCII)" FontSize="10" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
                                                 </StackPanel>
                                             </Button>
 
                                             <!-- Pedir Peso Balmak / Urano (W\r\n) -->
                                             <Button Click="BtnSendBalmak_Click" Grid.Column="2" Margin="3,0,6,0"
-                                                    Background="#251C2C" BorderBrush="{StaticResource AccentPurple}" BorderThickness="1"
-                                                    Foreground="{StaticResource TextPrimary}" Padding="10,8" Cursor="Hand">
+                                                    Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource AccentPurple}" BorderThickness="1.5"
+                                                    Foreground="{DynamicResource TextPrimary}" Padding="10,8" Cursor="Hand">
                                                 <StackPanel HorizontalAlignment="Center">
-                                                    <TextBlock Text="⚖️ Pedir Peso (Balmak / Urano)" FontWeight="Bold" FontSize="11" Foreground="{StaticResource AccentPurple}" HorizontalAlignment="Center" />
-                                                    <TextBlock Text="Envia comando 'W' (ASCII)" FontSize="9" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                    <TextBlock Text="⚖️ Pedir Peso (Balmak / Urano)" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource AccentPurple}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="Envia comando 'W' (ASCII)" FontSize="10" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
                                                 </StackPanel>
                                             </Button>
 
                                             <!-- Botão Limpar Tela -->
-                                            <Button Click="BtnClearSerialLog_Click" Grid.Column="3" Background="#1E2235" BorderThickness="0"
-                                                    Foreground="{StaticResource TextMuted}" FontSize="11" Padding="12,0" Cursor="Hand">
+                                            <Button Click="BtnClearSerialLog_Click" Grid.Column="3" Background="{DynamicResource BgCardDeep}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1"
+                                                    Foreground="{DynamicResource TextSecondary}" FontWeight="SemiBold" FontSize="11" Padding="12,0" Cursor="Hand">
                                                 <TextBlock Text="🧹 Limpar Dados" />
                                             </Button>
                                         </Grid>
 
                                         <!-- Terminal de Recepção de Dados da Balança -->
-                                        <Border Background="#090A0F" BorderBrush="{StaticResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10">
+                                        <Border Background="{DynamicResource BgConsole}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="1" CornerRadius="6" Padding="10">
                                             <StackPanel>
                                                 <Grid Margin="0,0,0,6">
-                                                    <TextBlock Text="DADOS RECEBIDOS DA BALANÇA / DISPOSITIVO SERIAL (ASCII E HEX):" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMuted}" />
-                                                    <TextBlock x:Name="TxtSerialBytesCount" Text="0 bytes recebidos" FontSize="10" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Right" />
+                                                    <TextBlock Text="DADOS RECEBIDOS DA BALANÇA / DISPOSITIVO SERIAL (ASCII E HEX):" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" />
+                                                    <TextBlock x:Name="TxtSerialBytesCount" Text="0 bytes recebidos" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Right" />
                                                 </Grid>
                                                 <TextBox x:Name="TxtSerialReceivedData" IsReadOnly="True" Background="Transparent" Foreground="#4ADE80"
                                                          BorderThickness="0" FontFamily="Consolas" FontSize="12" Height="140"
@@ -1481,7 +1481,7 @@
             </TabControl>
 
             <!-- ================= FOOTER STATUS BAR ================= -->
-            <Border Grid.Row="3" Background="#0C0D13" BorderBrush="{StaticResource BorderCard}" BorderThickness="0,1,0,0" Padding="16,0">
+            <Border Grid.Row="3" Background="{DynamicResource BgFooter}" BorderBrush="{DynamicResource BorderCard}" BorderThickness="0,1,0,0" Padding="16,0">
                 <Grid VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -1489,11 +1489,11 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="● " FontSize="10" Foreground="{StaticResource AccentGreen}" VerticalAlignment="Center" />
-                        <TextBlock x:Name="StatusTimestamp" Text="Monitorando hardware em tempo real" FontSize="11" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
+                        <TextBlock Text="● " FontSize="10" Foreground="{DynamicResource AccentGreen}" VerticalAlignment="Center" />
+                        <TextBlock x:Name="StatusTimestamp" Text="Monitorando hardware em tempo real" FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" />
                     </StackPanel>
 
-                    <TextBlock Grid.Column="1" Text="AnalisePro • Monitor de Hardware &amp; Discos • Portátil" FontSize="11" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1" Text="AnalisePro • Monitor de Hardware &amp; Discos • Portátil" FontSize="11" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" />
                 </Grid>
             </Border>
         </Grid>

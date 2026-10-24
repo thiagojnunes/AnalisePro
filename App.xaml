@@ -3,12 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!-- Dark modern brushes -->
+        <!-- Dark modern brushes (Semânticos com suporte a Dark/Light Theme) -->
         <SolidColorBrush x:Key="BgDark" Color="#0B0C10" />
+        <SolidColorBrush x:Key="BgHeader" Color="#0E1017" />
+        <SolidColorBrush x:Key="BgFooter" Color="#0C0D13" />
         <SolidColorBrush x:Key="BgCard" Color="#13151F" />
         <SolidColorBrush x:Key="BgCardHover" Color="#1B1E2E" />
+        <SolidColorBrush x:Key="BgCardInner" Color="#161926" />
+        <SolidColorBrush x:Key="BgCardDeep" Color="#10121C" />
+        <SolidColorBrush x:Key="BgBadge" Color="#1E293B" />
+        <SolidColorBrush x:Key="BgConsole" Color="#090A0F" />
+        <SolidColorBrush x:Key="TabInactiveBg" Color="#141724" />
         <SolidColorBrush x:Key="BorderCard" Color="#222638" />
         <SolidColorBrush x:Key="BorderCardGlow" Color="#00F0FF" />
+
+        <SolidColorBrush x:Key="InputBg" Color="#10121C" />
+        <SolidColorBrush x:Key="InputFg" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="InputBorder" Color="#2A2F45" />
 
         <SolidColorBrush x:Key="AccentCyan" Color="#00F0FF" />
         <SolidColorBrush x:Key="AccentGreen" Color="#00E676" />
